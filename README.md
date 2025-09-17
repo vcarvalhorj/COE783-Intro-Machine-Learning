@@ -1,1 +1,1 @@
-Capitulo 1 - Bishop
+Resolução de problemas do Livro:Pattern Recognition (Bishop)
