@@ -1,0 +1,1390 @@
+%%
+%%Universidade Federal do Rio de Janeiro (UFRJ)
+%%Programa de Engenharia Civil da COPPE/UFRJ
+%%
+%%Disciplina: Introdução ao aprendizado de máquina (COE 782)
+%%Professor: Marcos Vinicius Santos Lima
+%%
+%%Aluna: Vivian de Carvalho Rodrigues
+%%DRE:125228569
+%%
+%%Objetivo: Fazer um relatório da resolução dos exercícios da Lista 1 (Cap1 - Bishop)
+%%
+%%
+%%
+%%--------------------x---------------PREÂMBULO--------x---------------------------x-------------
+%%
+%%
+\documentclass{article}
+%
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[portuguese]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=1.5cm,bottom=2.5cm,left=3cm,right=1.5cm,marginparwidth=2cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{booktabs}% tabelas mais bonitas
+
+\title{UNIVERSIDADE FEDERAL DO RIO DE JANEIRO  \hspace{5cm}
+	   Programa de Engenharia Elétrica (COPPE/UFRJ) \hspace{5cm}
+	   COE 782 - Introdução ao aprendizado de máquina  \hspace{5cm} 
+	  Professor: Marcos Vinicius Santos Lima}
+
+\author{Aluna: Vivian de Carvalho Rodrigues - DRE: 125228569  \\
+	    Programa de Engenharia Civil (COPPE/UFRJ)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Relatório da resolução dos exercícios da Lista 1 (Cap\'itulo 1 - Bishop \cite{Bishop2006})
+\end{abstract}
+
+\section{Exerc\'icios do livro texto}
+
+\subsection{ Exerc\'icio 1.1}
+
+  Dada a função abaixo(eq. 1.2 de \cite{Bishop2006}):
+    %eq. 1.2 Bishop 
+    \begin{equation}
+       	E(\mathbf{w})=\frac{1}{2}\sum_{n=1}^{N}\left\{ y\left(x_{n}, \mathbf{w}\right)-t_{n}\right\} ^{2}                          \label{somaq}
+    \end{equation}
+
+  onde (eq.1.1 \cite{Bishop2006})
+     %eq. 1.1 Bishop
+    \begin{equation}
+	    y(x_{n},\mathbf{w})=w_{0}+w_{1}x_{n}+w_{2}x_{n}^{2}+\cdots+w_{M}x_{n}^{M}=\sum_{j=0}^{M}w_{j}x_{n}^{j}                               \label{polinomio}
+    \end{equation}
+
+  Os coeficientes $\mathbf{w}=\{ w_{i}\} $ que minimizam a função erro
+  
+  \[
+	 \frac{\partial E(\mathbf{w})}{\partial \mathbf{w}}=\frac{\partial}{\partial \mathbf{w}}\left[\frac{1}{2}\mathop{\sum_{n=1}^{N}\left\{ y\left(x_{n}, \mathbf{w}\right)-t_{n} \right\}^{2} }\right] = \frac{1}{2}\sum_{n=1}^{N} \frac{\partial}{\partial \mathbf{w}}  \{ y\left(x_{n}, \mathbf{w}\right)-t_{n} \} ^{2} =
+  \]
+  
+  \[
+    = \frac{1}{2} \sum_{n=1}^{N} 2 \{ y\left(x_{n}, \mathbf{w}\right)-t_{n} \}\frac{\partial}{\partial \mathbf{w}}\{ y\left(x_{n}, \mathbf{w}\right)-t_{n} \} = \sum_{n=1}^{N} \{ y\left(x_{n}, \mathbf{w}\right)-t_{n} \} \frac{\partial}{\partial \mathbf{w}}\sum_{j=0}^{M}w_{j}x_{n}^{j} =
+  \]
+  
+  \[
+    = \sum_{n=1}^{N} \{ \sum_{j=0}^{M}w_{j}x_{n}^{j}-t_{n} \} x_{n}^{i}
+  \]
+  
+	
+	
+	\[
+	 \frac{\partial E(\mathbf{w})}{\partial \mathbf{w}}= \sum_{n=1}^{N} \{ \sum_{j=0}^{M}w_{j} x_{n}^{i+j}- t_{n}x_{n}^{i} \} =0  
+	\]
+	
+	
+	
+	
+	\[
+	 \sum_{j=0}^{M}  w_{j}\sum_{n=1}^{N}(x_{n})^{i+j} = \sum_{n=1}^{N} t_{n}(x_{n})^{i}   
+	\]
+	
+	Portanto,
+	\[
+	 \sum_{j=0}^{M}  w_{j} A_{ij} = T_{i}   
+	\]
+	
+	Onde, $A_{ij} = \sum_{n=1}^{N}(x_{n})^{i+j}$  e	$T_{i} = \sum_{n=1}^{N} t_{n}(x_{n})^{i}$.
+	
+	
+
+
+\subsection{ Exerc\'icio 1.2}
+   
+    Dada a função abaixo(eq. 1.4 de \cite{Bishop2006}):
+   
+    %eq 1.4 bishop
+    \begin{equation}
+	  E(\mathbf{w})=\frac{1}{2}\sum_{n=1}^{N}\left\{ y\left(x_{n},\mathbf{w}\right)-t_{n}\right\} ^{2}+\frac{\lambda_{r}}{2}\Vert \mathbf{w}\Vert^{2}                               \label{eq101_ML}
+    \end{equation}
+    
+    Onde 
+    \begin{equation}
+       \Vert \mathbf{w}\Vert^{2} = \mathbf{w}^{T}\mathbf{w} = w_{0}^2+w_{1}^2+w_{2}^2+ \cdots+ w_{M}^2 = \sum_{j=0}^{M}w_{j}^2
+    \end{equation}
+    
+    
+    \[
+    \frac{\partial E(\mathbf{w})}{\partial \mathbf{w}}=\frac{\partial}{\partial \mathbf{w}}\left[\frac{1}{2}\mathop{\sum_{n=1}^{N}\left\{ y\left(x_{n}, \mathbf{w}\right)-t_{n} \right\}^{2} }\right] +  \frac{\partial}{\partial \mathbf{w}} \left[ \frac{\lambda_{r}}{2}\Vert \mathbf{w}\Vert^{2}\right]
+    \]
+    
+    Foi verificado no exercício anterior que, a derivada com relação aos coeficientes $\mathbf{w}$, da primeira parcela da expressão acima é dada por:
+    
+     \[
+      \sum_{j=0}^{M}  w_{j} A_{ij} - T_{i} =  \sum_{j=0}^{M}  w_{j}\sum_{n=1}^{N}(x_{n})^{i+j} - \sum_{n=1}^{N} t_{n}(x_{n})^{i}
+     \]
+    
+    Resolvendo a derivada da segunda parcela 
+    
+    \[
+    \frac{\lambda}{2} \frac{\partial}{\partial \mathbf{w}} \Vert \mathbf{w}\Vert^{2} =\frac{\lambda}{2} \frac{\partial}{\partial \mathbf{w}} = \sum_{j=0}^{M}w_{j}^2 = \frac{\lambda}{2} \sum_{j=0}^{M} 2 w_{j} = \lambda \sum_{j=0}^{M} w_{j}
+    \]
+    
+    Então
+    
+    \[
+    \frac{\partial E(\mathbf{w})}{\partial \mathbf{w}}=\sum_{j=0}^{M}  w_{j}\sum_{n=1}^{N}(x_{n})^{i+j} - \sum_{n=1}^{N} t_{n}(x_{n})^{i} + \lambda \sum_{j=0}^{M} w_{j}=0
+    \] 
+    
+    Rearranjando os termos da expressão 
+    
+    \[
+    \sum_{j=0}^{M}  w_{j}\sum_{n=1}^{N}(x_{n})^{i+j} + \lambda \sum_{j=0}^{M} w_{j} = \sum_{n=1}^{N} t_{n}(x_{n})^{i} 
+    \]
+    
+    \[
+    \left\{\sum_{n=1}^{N}(x_{n})^{i+j} + \lambda\right\} \sum_{j=0}^{M} w_{j} = \sum_{n=1}^{N} t_{n}(x_{n})^{i} 
+    \]
+    
+    Portanto
+    
+    \[
+    \left\{\sum_{j=0}^{M} A_{ij} + \lambda\mathbf{I}_{ij} \right\}  w_{j} = T_{i} 
+    \]
+    
+\subsection{ Exerc\'icio 1.5}
+
+  Desenvolvendo a eq.1.38 do \cite{Bishop2006}
+     %Eq. 1.38
+     \begin{equation}
+     	var[f]=\mathbb{E}[(f(x)-\mathbb{E}[f(x)])^{2}]             
+     \end{equation}
+    
+     \[
+      var[f]= \mathbb{E}[f(x)^{2}-2f(x)\mathbb{E}[f(x)]+\mathbb{E}[f(x)]^{2}]= \mathbb{E}[f(x)^{2}] -2\mathbb{E}[f(x)] \mathbb{E}[f(x)]+\mathbb{E}[f(x)]^{2}  
+     \]
+      
+      Portanto
+     %Eq 1.39
+     \[ var[f]=\mathbb{E}[f(x)^{2}]-\mathbb{E}[f(x)]^{2} \]
+     
+
+\subsection{ Exerc\'icio 1.6}
+
+    A definição da eq. 1.41 de \cite{Bishop2006} é
+	%Eq. 1.41
+	%https://stackoverflow.com/questions/2860145/how-can-i-have-linebreaks-in-my-long-latex-equations/51116894#51116894
+	\begin{equation}
+		\begin{aligned}
+			  cov[x,y] & = \mathbb{E}_{x,y}[\{x-\mathbb{E}[x]\}\{y-\mathbb{E}[y]\}] \\
+				& = \mathbb{E}_{x,y}[xy]-\mathbb{E}[x]\mathbb{E}[y]
+		\end{aligned}                                                  \label{eq124_ML}
+	\end{equation}
+	   
+   O valor esperado de $f(x)$ é dada pela eq.1.33 de \cite{Bishop2006}:  
+   
+   \[
+     \mathbb{E}[f]= \sum_{n}p(x)f(x)
+   \]
+   
+   Que é uma extensão do valor esperado de $x$ (definição 4.1.1 de \cite{DeGroot2012}):
+   
+   \[
+   \mathbb{E}[x]= \sum_{n}p(x)x
+   \]
+   
+   
+   A partir da eq.2.2.1 de \cite{DeGroot2012} , se 2 eventos são independentes
+   
+   \[
+   p(x,y) = p(x)p(y)
+   \]
+   
+   Utilizando o Teorema 4.2.6 de \cite{DeGroot2012} e a definição de valor esperado considerando que $x$ e $y$ são variáveis aleatórias independentes: 
+   
+   \[
+   \mathbb{E}[x,y]= \sum_{x} \sum_{y}p(x,y)xy = \sum_{x} xp(x) \sum_{y} y p(y) = \mathbb{E}[x]\mathbb{E}[y] 
+   \]
+   
+\subsection{ Exerc\'icio 1.7}
+
+    A distribuição gaussiana é definida por (eq.1.46 de \cite{Bishop2006}):
+  
+    % eq 1.46
+     \begin{equation}
+        \mathcal{N}(x|\mu,\sigma^{2})=\frac{1}{(2\pi\sigma^{2})^{1/2}}\exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\}                              
+     \end{equation}
+  
+  
+  que é governada por dois parâmetros: $\mu$, chamado de \textbf{média}, e $\sigma^{2}$, chamado de \textbf{variância}.  A raiz quadrada da variância, representada por $\sigma$, é chamada de \textbf{desvio padrão} e,  o inverso da variância,  $\beta =1/\sigma^{2}$, é chamado de \textbf{precisão}.
+  
+  A transformação de coordenadas cartesianas é definida por
+  
+  \[
+    x = r \cos \theta
+  \]
+  
+  \[
+  y = r \sin \theta
+  \]
+  
+  Que satisfaz a relação trigonométrica $x^{2}+y^{2} = r^{2}$.
+  
+  
+  Se
+  
+  \[
+   I^{2}= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \exp \left(-\frac{1}{2\sigma^{2}} x^{2} - \frac{1}{2\sigma^{2}} y^{2}  \right) dx dy
+  \]
+  
+  e
+  
+  \[
+   \frac{\partial (x,y)}{\partial (r, \theta)} = r  
+  \]
+  
+  Então 
+  
+  \[
+     I^{2}= \int_{0}^{2 \pi} \int_{0}^{\infty} \exp \left(-\frac{r^{2}}{2\sigma^{2}}  \right) rdr d\theta
+  \]
+  
+  
+  Fazendo mudança de variáveis $r^{2}=u$:
+  
+  
+  \[
+    I^{2}= 2\pi \int_{0}^{\infty} \exp \left(-\frac{u}{2\sigma^{2}} \right) \frac{1}{2} du = \pi \left[   \exp \left(-\frac{u}{2\sigma^{2}} \right) (-2 \sigma^{2}) \right]^{\infty}_{0} = 2\pi \sigma^{2}
+  \] 
+  
+  \[
+   I = (2\pi \sigma^{2})^{1/2}
+  \]
+  
+  Desta forma realizando a integral da distribuição gaussiana utilizando $y = x-\mu$:
+  \[
+   \int_{-\infty}^{\infty}\mathcal{N}(x|\mu,\sigma^{2}) dx =\frac{1}{(2\pi\sigma^{2})^{1/2}} \int_{-\infty}^{\infty} \exp\left\{ -\frac{y^{2}}{2\sigma^{2}}\right\} dy = \frac{I}{(2\pi \sigma^{2})^{1/2}} =1
+  \]
+\subsection{ Exerc\'icio 1.8}
+ 
+   \textbf{Primeira parte do exercício:} \\ 
+   Relembrando, a distribuição gaussiana é definida por (eq.1.46 de \cite{Bishop2006})
+  
+  % eq 1.46
+  \begin{equation}
+  	\mathcal{N}(x|\mu,\sigma^{2})=\frac{1}{(2\pi\sigma^{2})^{1/2}}\exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\}                              
+  \end{equation}
+  
+  O valor esperado de funções de $x$ sob a distribuição gaussiana, por definição é dado por:
+  
+   \begin{equation}
+     	\mathbb{E}[x]=\int_{-\infty}^{\infty}\mathcal{N}(x|\mu,\sigma^{2})xdx
+   \end{equation}
+  
+  Desta forma
+  
+      \[
+     	\mathbb{E}[x]= \int_{-\infty}^{\infty} \frac{1}{(2\pi\sigma^{2})^{1/2}}\exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\} x dx
+      \]
+   
+   Realizando a troca de variáveis
+   
+       \[ x-\mu = u  \] 
+        \[\frac{du}{dx} = 1\] 
+   
+   A integral passa a ser escrita como
+   
+     \[
+        \int_{-\infty}^{\infty} \frac{1}{(2\pi\sigma^{2})^{1/2}}\exp\left\{ -\frac{u^{2}}{2\sigma^{2}}\right\} (u+\mu) du = 
+        \frac{\mu}{(2\pi\sigma^{2})^{1/2}}\int_{-\infty}^{\infty}\exp\left\{ -\frac{u^{2}}{2\sigma^{2}}\right\}du + \frac{1}{(2\pi\sigma^{2})^{1/2}}\int_{-\infty}^{\infty}\exp\left\{ -\frac{u^{2}}{2\sigma^{2}}\right\}udu 
+     \] 
+   
+  \vspace{2cm}
+   Note que, conforme foi observado no exercício anterior:
+   
+      \[
+        \frac{1}{(2\pi\sigma^{2})^{1/2}}\int_{-\infty}^{\infty}\exp\left\{ -\frac{u^{2}}{2\sigma^{2}}\right\} du = 1
+       \]
+  
+  e a segunda parcela é uma integral de função ímpar de $-\infty$ até $+\infty$ e o termo se anula:
+  
+      \[
+        \frac{1}{(2\pi\sigma^{2})^{1/2}}\int_{-\infty}^{\infty}\exp\left\{ -\frac{u^{2}}{2\sigma^{2}}\right\}udu = 0
+      \]
+      
+   Portanto, confirma-se a eq.1.49 de \cite{Bishop2006}
+   
+      \[
+      \mathbb{E}[x]=\int_{-\infty}^{\infty}\mathcal{N}(x|\mu,\sigma^{2})xdx = \mu
+      \] 
+    
+   \textbf{Segunda parte do exercício:} \\    
+   Diferenciando os dois lados da condição de normalização abaixo (eq.1.48 do \cite{Bishop2006}):
+   
+   \begin{equation}
+   	\int_{-\infty}^{\infty}\mathcal{N}(x|\mu,\sigma^{2})dx=1     
+   \end{equation}
+    
+    
+    \[
+    \int_{-\infty}^{\infty}\mathcal{N}(x|\mu,\sigma^{2})dx =    \int_{-\infty}^{\infty}\frac{1}{(2\pi\sigma^{2})^{1/2}}\exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\}dx = 1
+    \]
+    
+     \[
+     \int_{-\infty}^{\infty}\exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\}dx = (2\pi\sigma^{2})^{1/2}
+    \]
+    
+    Para realizar a derivação com relação a $\sigma^2$ considera-se as seguintes funções auxiliares $f(\sigma^2)$ e $g(\sigma^2)$:
+    
+    \[
+    f(\sigma^2) = \exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\}
+    \]
+    
+    \[
+    \frac{ d f(\sigma^2) }{d\sigma^2} =\frac{(x-\mu)^{2}}{2\sigma^{4}} \exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\}
+    \]
+    
+    e
+    
+    \[
+    g(\sigma^2) = (2\pi\sigma^{2})^{1/2}
+    \]
+    
+    
+    \[
+    \frac{ d g(\sigma^2) }{d\sigma^2} = \frac{1}{2} (2\pi\sigma^{2})^{-1/2}2\pi = (2\pi\sigma^{2})^{-1/2}\pi
+    \]
+    
+    Desta forma: 
+    
+    \[
+    \int_{-\infty}^{\infty}\frac{(x-\mu)^{2}}{2\sigma^{4}} \exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\}dx = (2\pi\sigma^{2})^{-1/2}\pi
+    \]
+    
+    
+    \[
+    \frac{1}{2^{1/2} \pi^{1/2} \sigma}\int_{-\infty}^{\infty} \exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\} (x-\mu)^{2}dx = \sigma^{2}
+    \]
+    
+    Que pode ser reescrito como
+    
+    \[
+    \frac{1}{(2\pi\sigma^{2})^{1/2}}\int_{-\infty}^{\infty}\exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\} (x-\mu)^{2}dx = \mathbb{E}[(x-\mu)^{2}]=\sigma^2=var[x]
+    \]
+    
+    Assim
+    
+    \[
+    \mathbb{E}[(x-\mu)^{2}] = \mathbb{E}[(x^{2}- 2\mu x+\mu^{2})] = \sigma^2
+    \]
+    
+    \[
+    \mathbb{E}[x^{2}]- 2\mu \mathbb{E}[x]+\mu^{2} =\mathbb{E}[x^{2}]- 2\mu^2 +\mu^{2}=\sigma^2
+    \]
+    
+    Portanto, o valor esperado de funções de $x^{2}$ sob a distribuição gaussiana, por definição é dado por:
+    
+    \begin{equation}
+    	\mathbb{E}[x^{2}]=\int_{-\infty}^{\infty}\mathcal{N}(x|\mu,\sigma^{2})x^{2}dx = \mu^{2}+\sigma^2
+    \end{equation}
+    
+    Finalmente
+    
+    \[
+    \mathbb{E}[x^2]- \mathbb{E}[x]^2 = \mu^2+\sigma^2-\mu^2 = \sigma^2
+    \]
+    
+    
+    
+\subsection{ Exerc\'icio 1.9}
+
+ \textbf{Gaussiana Univariada} \\
+   A distribuição gaussiana uni variada é definida por (eq.1.46 de \cite{Bishop2006})
+  
+  % eq 1.46
+  \begin{equation}
+  	\mathcal{N}(x|\mu,\sigma^{2})=\frac{1}{(2\pi\sigma^{2})^{1/2}}\exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\}                              
+  \end{equation}
+  
+  A \textbf{moda} de uma variável aleatória contínua é o valor em que a função densidade de probabilidade (f.d.p.) atinge o seu máximo — ou seja, o valor mais provável ou mais "frequente" dentro do possível intervalo contínuo. 
+  
+  Para isto, basta derivar a distribuição com relação à variável aleatória $x$ e igualar a zero.
+  
+  \[
+  \frac{\partial}{\partial x} \mathcal{N} (x|\mu,\sigma^{2}) =\frac{1}{(2\pi\sigma^{2})^{1/2}} \frac{\partial}{\partial x} \left[  \exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\} \right] = -\frac{1}{(2\pi\sigma^{2})^{1/2}} \exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\} 2 \frac{(x-\mu)}{2\sigma^{2}}
+  \]
+  
+  \[
+  \frac{\partial}{\partial x} \mathcal{N} (x|\mu,\sigma^{2}) =-\frac{1}{(2\pi\sigma^{2})^{1/2}} \exp\left\{ -\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right\} \frac{(x-\mu)}{\sigma^{2}} = 0
+  \]
+  
+  Portanto
+  
+  \[ x = \mu \]
+   
+
+ \textbf{Gaussiana Multivariada} \\
+ 
+  Conforme apresentado na eq.1.52 de \cite{Bishop2006}, a distribuição gaussiana definida sobre um vetor D-dimensional $\mathbf{x}$ de variáveis contínuas, é dada por
+ 
+ 	%eq 1.52
+ 	\begin{equation}
+ 		\mathcal{N}(\mathbf{x}|\boldsymbol{\mu},\boldsymbol{\Sigma})=\frac{1}{(2\pi)^{D/2}}\frac{1}{\boldsymbol{\Sigma}^{1/2}}\exp\left\{ -\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{T} \boldsymbol{\Sigma}^{-1} (\mathbf{x}-\boldsymbol{\mu})\right\}                             
+ 	\end{equation}
+ 
+ 	onde o vetor D-dimensional $\boldsymbol{\mu}$ é chamado de média, a matriz $\boldsymbol{\Sigma}$, $D \times D$,  é chamada de covariância e, $|\boldsymbol{\Sigma}|$ é o determinante de $\boldsymbol{\Sigma}$
+ 	
+  Será realizada a derivada de $\mathcal{N}(\mathbf{x}|\boldsymbol{\mu},\boldsymbol{\Sigma})$ com relação a $\mathbf{x}$.
+  
+  
+  \[
+   	\frac{\partial}{\partial \mathbf{x}} \mathcal{N}(\mathbf{x}|\boldsymbol{\mu},\boldsymbol{\Sigma})=\frac{1}{(2\pi)^{D/2}}\frac{1}{\boldsymbol{\Sigma}^{1/2}}  \frac{\partial}{\partial \mathbf{x}} \left[  \exp\left\{ -\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{T} \boldsymbol{\Sigma}^{-1}  (\mathbf{x}-\boldsymbol{\mu})\right\} \right] =  
+  \]
+
+   \[
+   \frac{1}{(2\pi)^{D/2}}\frac{1}{\boldsymbol{\Sigma}^{1/2}} \exp\left\{ -\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{T} \boldsymbol{\Sigma}^{-1}  (\mathbf{x}-\boldsymbol{\mu})\right\} \left[-\frac{1}{2} \frac{\partial}{\partial \mathbf{x}} \left\{(\mathbf{x}-\boldsymbol{\mu})^{T} \boldsymbol{\Sigma}^{-1}  (\mathbf{x}-\boldsymbol{\mu})\right\}  \right]  
+   \]
+   
+   
+   Para resolver a questão, serão utililzadas três propriedades derivadas de matrizes do Apêndice C de \cite{Bishop2006}:
+   
+   \[
+      (\mathbf{A}\mathbf{B})^{T} = \mathbf{B}^{T}\mathbf{A}^{T}
+   \]
+   
+   \[
+   \frac{\partial}{\partial x} (\mathbf{A}\mathbf{B}) = \frac{\partial \mathbf{A}}{\partial x}  \mathbf{B} + \mathbf{A}  \frac{\partial \mathbf{B}}{\partial x} 
+   \]
+   
+   \[
+   \frac{\partial}{\partial x} (\mathbf{x}^{T}\mathbf{a}) = \frac{\partial}{\partial x} (\mathbf{a}^{T}\mathbf{x}) =  \mathbf{a}
+   \]
+   
+   Desta forma
+   
+   \[
+   \frac{\partial}{\partial \mathbf{x}} \left\{(\mathbf{x}-\boldsymbol{\mu})^{T} \boldsymbol{\Sigma}^{-1}  (\mathbf{x}-\boldsymbol{\mu})\right\}  =  \frac{\partial}{\partial \mathbf{x}} \left\{(\mathbf{x}-\boldsymbol{\mu})^{T}  \boldsymbol{\Sigma}^{-1} \right\} (\mathbf{x}-\boldsymbol{\mu}) + (\mathbf{x}-\boldsymbol{\mu})^{T} \boldsymbol{\Sigma}^{-1} \frac{\partial}{\partial \mathbf{x}}(\mathbf{x}-\boldsymbol{\mu}) = 
+   \]
+   
+   \[
+   = \frac{\partial}{\partial \mathbf{x}} \left\{ (\boldsymbol{\Sigma}^{-1})^{T}  (\mathbf{x}-\boldsymbol{\mu})\right\}(\mathbf{x}-\boldsymbol{\mu})+(\mathbf{x}-\boldsymbol{\mu})^{T} \boldsymbol{\Sigma}^{-1} \mathbf{I} =  \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}) + (\mathbf{x}-\boldsymbol{\mu})^{T} \boldsymbol{\Sigma}^{-1} =2(\mathbf{x}-\boldsymbol{\mu})^{T} \boldsymbol{\Sigma}^{-1} = 2\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})
+   \]
+   
+   Assim,
+   
+   \[
+   \frac{\partial}{\partial \mathbf{x}} \mathcal{N}(\mathbf{x}|\boldsymbol{\mu},\boldsymbol{\Sigma})= -\frac{1}{(2\pi)^{D/2}}\frac{1}{\boldsymbol{\Sigma}^{1/2}} \exp\left\{ -\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{T} \boldsymbol{\Sigma}^{-1}  (\mathbf{x}-\boldsymbol{\mu})\right\} \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}) = 0
+   \]
+   
+   Portanto
+   
+   \[\mathbf{x} = \boldsymbol{\mu}\]
+   
+
+\subsection{ Exerc\'icio 1.10}
+
+
+Se $x$ e $z$ são independentes $p(x,z) = p(x)p(z)$. 
+
+Para resolução deste exercício serão, também, utilizadas as seguintes definições:
+
+ \begin{enumerate}
+   \item Dada uma variável aleatória $f(x)$ e sua função densidade de probabilidade, o valor esperado desta variável é dada por
+          \[
+           \mathbb{E}[f]= \int p(x)f(x)dx 
+          \]
+     e 
+           \[
+            \int p(x) dx = 1
+           \]  
+       
+    \item A definição de variância da eq.1.38 de \cite{Bishop2006}
+    
+          \[
+          	var[f]=\mathbb{E}[(f(x)-\mathbb{E}[f(x)])^{2}]     
+          \]   
+           
+    \item O Teorema 4.3.5 de \cite{DeGroot2012} ilustra uma parte da resolução deste exercício no seguinte trecho
+    
+        \[
+         \mathbb{E}[(x-\mathbb{E}[x])(z-\mathbb{E}[z])] = \mathbb{E}[(xz- x\mathbb{E}[z] -z\mathbb{E}[x])+\mathbb{E}[x]\mathbb{E}[z]]
+        \]
+        
+        
+        
+        \[
+        \mathbb{E}[(x-\mathbb{E}[x])(z-\mathbb{E}[z])] =\int p(z)z \left\{\int p(x)x dx\right\}dz- \mathbb{E}[z] \int xp(x)dx - \mathbb{E}[x] \int zp(z)dz + \mathbb{E}[x]\mathbb{E}[z] 
+        \]
+        
+        \[
+        \mathbb{E}[(x-\mathbb{E}[x])(z-\mathbb{E}[z])] = \mathbb{E}[x]\mathbb{E}[z] - \mathbb{E}[x]\mathbb{E}[z] -\mathbb{E}[x]\mathbb{E}[z]+\mathbb{E}[x]\mathbb{E}[z]=0
+        \]
+        
+  \end{enumerate} 
+        
+     \textbf{Resolução}
+      
+      \[
+      \mathbb{E}[x + z]= \int \int (x+z)p(x,z)dxdz =\int \int (x+z)p(x)p(z)dxdz
+      \]
+      
+      \[
+      \mathbb{E}[x + z]= \int \int xp(x)p(z)dxdz + \int \int zp(x)p(z)dxdz = \int p(z)\left(\int xp(x)dx\right)dz +  \int p(z)z\left(\int p(x)dx\right)dz
+      \]
+      
+      Utilizando a definição 1 pode-se concluir que
+      
+      \[
+      \mathbb{E}[x + z]= \mathbb{E}[x]+\mathbb{E}[z]
+      \]
+      
+      Para a variância, a partir da definição 2 e 3:
+
+      \[
+      var[x+z] = \mathbb{E}[(x+z-\mathbb{E}[x+z])^{2}] = \mathbb{E}[(x+z-\mathbb{E}[x]-\mathbb{E}[z])^{2}] = \mathbb{E}[\left\{(x-\mathbb{E}[x])+(z-\mathbb{E}[z])\right\}^{2}]
+      \]
+       
+      \[
+       var[x+z] =\mathbb{E}[(x-\mathbb{E}[x])^{2} - 2(x-\mathbb{E}[x])(z-\mathbb{E}[z])  +(z-\mathbb{E}[z])^{2}] = \mathbb{E}[(x-\mathbb{E}[x])^{2} +(z-\mathbb{E}[z])^{2}]
+      \]
+      
+      \[
+      var[x+z] = var[x]+var[z]
+      \]
+     
+\subsection{ Exerc\'icio 1.11}
+   
+   A eq. 1.54 de \cite{Bishop2006} é
+   
+   %eq 1.54
+   \begin{equation}
+      \ln p(\mathbf{x}|\mu,\sigma^{2})=-\frac{1}{2\sigma^{2}}\sum_{n=1}^{N}(x_{n}-\mu)^{2}-\frac{N}{2}\ln \sigma^{2}-\frac{N}{2} \ln (2\pi)                           
+   \end{equation}
+   
+  Calculando a sua derivada com relação ao parâmetro $\mu$
+  
+    \[
+     \frac{\partial}{\partial \mu} \ln p(\mathbf{x}|\mu,\sigma^{2}) = -\frac{1}{2\sigma^{2}}\sum_{n=1}^{N} 2 (x_{n}-\mu) (-1) = \frac{1}{\sigma^{2}}\sum_{n=1}^{N} (x_{n}-\mu) = 0
+    \]
+    
+    \[
+    \sum_{n=1}^{N} (x_{n}-\mu) = 0
+    \] 
+    
+    \[
+    \sum_{n=1}^{N} x_{n}- N \mu = 0 
+    \]
+    
+    Portanto
+    
+    \[
+     \mu = \frac{1}{N}\sum_{n=1}^{N} x_{n}
+    \]
+     
+     
+    Fazendo o cálculo da derivada o logaritmo a verossimilhança com relação à $\sigma^{2}$
+    
+     \[
+     \frac{\partial}{\partial \mu} \ln p(\mathbf{x}|\mu,\sigma^{2}) = -\frac{1}{2(\sigma^{2})^{2}}\sum_{n=1}^{N} (x_{n}-\mu)^{2} - \frac{N}{2 \sigma^{2}} = 0
+     \]
+     
+     
+     \[
+     \frac{1}{2 \sigma^{4}} \sum_{n=1}^{N} (x_{n}-\mu)^{2}= \frac{N}{2 \sigma^{2}}
+     \]
+     
+     Portanto
+     
+     \[
+     \sigma^{2} = \frac{1}{N} \sum_{n=1}^{N} (x_{n}-\mu)^{2}
+     \]
+     
+
+\subsection{ Exerc\'icio 1.13}
+  
+  A solução da máxima verossimilhança para a variância (eq.1.56 de\cite{Bishop2006}) é
+  
+  %eq 1.56
+  \begin{equation}
+    \sigma_{ML}^{2}=\frac{1}{N}\sum_{n=1}^{N}(x_{n}-\mu_{ML})^{2}      
+  \end{equation}
+   
+   A partir das definições abaixo
+   
+   %eq 1.49
+   \begin{equation}
+   	\mathbb{E}[x]=\int_{-\infty}^{\infty}\mathcal{N}(x|\mu,\sigma^{2})xdx=\mu  =\mathbb{E}[x] 
+   \end{equation}
+   
+   
+   %eq.1.50
+   \begin{equation}
+      \mathbb{E}[x^{2}]=\int_{-\infty}^{\infty}\mathcal{N}(x|\mu,\sigma^{2})x^{2}dx=\mu^{2}+\sigma^{2} = \mathbb{E}[x^{2}] 
+   \end{equation}
+   
+   Então
+   
+   \[
+   \mathbb{E}_{xn}\left[\frac{1}{N}\sum_{n=1}^{N} (x_{n}-\mu)^{2}\right]=\frac{1}{N}\sum_{n=1}^{N} \mathbb{E}_{xn}\left\{x_{n}^{2}-2 x_{n} \mu + \mu^{2}  \right\}= \frac{1}{N}\sum_{n=1}^{N} \mathbb{E}_{xn}\left\{ \mu^{2}+\sigma^{2}-2 \mu^{2}+\mu^{2}  \right\} = \sigma^{2}
+   \]
+
+\subsection{ Exerc\'icio 1.21}
+
+   Para a resolução deste exercício serão avaliadas utilizadas as seguintes propriedades
+   
+   
+   \begin{enumerate}
+   	\item  Se $ a \leq b $ então
+   	 
+        \[ 
+         \sqrt{a}\leq\sqrt{b}   
+        \]  
+        
+        \[
+        \sqrt{a} \sqrt{a}\leq \sqrt{a} \sqrt{b}
+        \]   
+        
+        \[
+        a \leq \left( ab \right)^{1/2}
+        \] 	      
+   	
+   	\item Regra do produto
+   	
+   	  \[
+   	  p(X,Y)=p(Y|X)p(X)  
+   	  \] 
+   	   
+   	   Em problemas de classificação da variável aleatória $\mathbf{x}$
+   	   
+   	    \[
+   	   p(\mathbf{x},\mathcal{C}_{k})=p(\mathcal{C}_{k}|\mathbf{x})p(\mathbf{x})  
+   	   \] 
+   	     
+   	
+   \end{enumerate} 
+  
+  Assim, um erro ocorre quando um vetor de entrada pertencente à classe $\mathcal{C}_{1}$ é atribuído à classe $\mathcal{C}_{2}$ ou vice-versa. A probabilidade de isso ocorrer é dada por
+  
+  %eq 1.78
+  %https://stackoverflow.com/questions/2860145/how-can-i-have-linebreaks-in-my-long-latex-equations/51116894#51116894
+  \begin{equation}
+ 	\begin{aligned}
+  			p(mistake) & =  p(\mathbf{x\in}\mathcal{R}_{1},\mathcal{C}_{2})+p(\mathbf{x\in}\mathcal{R}_{2},\mathcal{C}_{1})  \\
+  		     & = \intop_{\mathcal{R}_{1}}p(\mathbf{x},\mathcal{C}_{2})dx+\intop_{\mathcal{R}_{2}}p(\mathbf{x},\mathcal{C}_{1})dx
+  		\end{aligned}                                                 
+   \end{equation}
+   
+   Pela regra do produto 
+   
+    \[
+    p(mistake) = \intop_{\mathcal{R}_{1}}p(\mathcal{C}_{2}|\mathbf{x})p(\mathbf{x})dx+\intop_{\mathcal{R}_{2}}p(\mathcal{C}_{2}|\mathbf{x})p(\mathbf{x})dx
+    \]
+    
+  Note que na região $\mathcal{R}_{1}$, $p(\mathbf{x},\mathcal{C}_{2}) \leq p(\mathbf{x},\mathcal{C}_{1})$. Assim como $p(\mathbf{x},\mathcal{C}_{1}) \leq p(\mathbf{x},\mathcal{C}_{2})$ na região $\mathcal{R}_{2}$. Portanto, utilizando a definição 1:
+  
+  \[
+   p(mistake) \leq \intop_{\mathcal{R}_{1}} \left\{p(\mathcal{C}_{1}|\mathbf{x})p(\mathcal{C}_{2}|\mathbf{x})   \right\}^{1/2}p(\mathbf{x})dx+\intop_{\mathcal{R}_{2}} \left\{p(\mathcal{C}_{1}|\mathbf{x})p(\mathcal{C}_{2}|\mathbf{x})\right\}^{1/2} p(\mathbf{x})dx = \intop_{\mathcal{R}}\left\{p(\mathcal{C}_{1}|\mathbf{x})p(\mathbf{x})p(\mathcal{C}_{2}|\mathbf{x})p(\mathbf{x}) \right\}^{1/2}dx
+  \]
+  
+  \[
+   p(mistake) \leq \intop_{\mathcal{R}}\left\{p(\mathbf{x},\mathcal{C}_{1})p(\mathbf{x},\mathcal{C}_{2}) \right\}^{1/2}dx
+  \]
+
+\subsection{ Exerc\'icio 1.22}
+
+ A regra de decisão que minimiza a perda esperada é aquela que atribui cada novo $\mathbf{x}$ à classe $j$ para a qual a quantidade
+ 
+ %eq 1.81
+ \begin{equation}
+ 	\sum_{k}L_{kj}p(\mathcal{C}_{k}| \mathbf{x})                      
+ \end{equation}
+ 
+ é mínima.
+ 
+ Fazendo $L_{kj} = 1 - \mathbf{I}_{kj}$, onde $\mathbf{I}_{kj}$ são os elementos da matriz identidade:
+ 
+  \[
+   min\left\{\sum_{k}L_{kj}p(\mathcal{C}_{k}| \mathbf{x}) \right\}
+  \]
+  
+  \[
+  min\left\{\sum_{k} (1 - \mathbf{I}_{kj}) p(\mathcal{C}_{k}| \mathbf{x}) \right\}
+  \]
+  
+   \[
+  min\left\{\sum_{k}p(\mathcal{C}_{k}| \mathbf{x}) - \sum_{k}\mathbf{I}_{kj}p(\mathcal{C}_{k}| \mathbf{x}) \right\}
+  \]
+  
+  \[
+  min\left\{1 - p(\mathcal{C}_{k}| \mathbf{x}) \right\} \equiv max\left\{ p(\mathcal{C}_{k}| \mathbf{x})\right\}
+  \]
+  
+  
+
+\subsection{ Exerc\'icio 1.23}
+ 
+ A partir da equação 1.81 de \cite{Bishop2006}
+
+ %eq 1.81
+  \begin{equation}
+	\sum_{k}L_{kj}p(\mathcal{C}_{k}| \mathbf{x})                      
+  \end{equation}
+  
+ Sabendo que $p(\mathcal{C}_{k}, \mathbf{x})=p(\mathcal{C}_{k}| \mathbf{x})p(\mathbf{x})=p(\mathbf{x}|\mathcal{C}_{k})p(\mathcal{C}_{k}) $, então
+ 
+ \[
+   	\sum_{k}L_{kj}p(\mathcal{C}_{k}| \mathbf{x})  = \frac{1}{p(\mathbf{x})} 	\sum_{k}L_{kj}p(\mathbf{x}|\mathcal{C}_{k})p(\mathcal{C}_{k})
+ \]
+ 
+ Existe uma compensação direta entre as probabilidades a priori e a matriz de perdas. Isso significa que ajustar a probabilidade a priori de uma classe,$p(\mathcal{C}_{k})$, afeta a forma como as perdas influenciam a tomada de decisão.
+
+\subsection{ Exerc\'icio 1.25}
+
+  Em problemas de regressão, uma escolha comum de função de custo é a perda quadrática dada por $L(t,y(\mathbf{x}))=\{y(\mathbf{x}) - t\}^{2}$. Nesse caso, a perda esperada pode ser escrita como
+  
+
+  %eq 1.87
+  \begin{equation}
+  	\mathbb{E}[L]=\iint\{y(\mathbf{x})-t\}^{2}p(\mathbf{x},t)d\mathbf{x}dt    
+  \end{equation}
+
+  para 1 exemplo de treino. Já para múltiplos \textit{targets} e equação pode ser generalizada para
+
+  %eq 1.87
+   \begin{equation}
+  	\mathbb{E}[L]=\iint\{y(\mathbf{x})-\mathbf{t}\}^{2}p(\mathbf{x},\mathbf{t})d\mathbf{x}d\mathbf{t}\end{equation}
+
+  Utilizando a equação D-8 (apêndice D) de cálculo de variações
+  
+  %eq. D8 (apêndice D)
+  \begin{equation}
+           \frac{\partial G}{\partial y} -   \frac{\partial }{\partial x} \left(\frac{\partial G}{\partial y'}\right) = 0
+  \end{equation} 
+  
+  Assim,
+  
+  \[
+  \frac{\partial 	\mathbb{E}[L]}{\partial y} -   \frac{\partial }{\partial x} \left(\frac{\partial \mathbb{E}[L]}{\partial y'}\right) = 0
+  \]
+  
+  \[
+  \frac{\partial 	\mathbb{E}[L]}{\partial y} =   \frac{\partial }{\partial x} \left(\frac{\partial \mathbb{E}[L]}{\partial y'}\right) 
+  \]
+  
+  Como o valor esperado da perda depende apenas de $y(\mathbf{x})$ e $\mathbf{t}$
+  
+  \[
+ \frac{\partial \mathbb{E}[L (y(\mathbf{x}),\mathbf{t})]}{\partial y'} = 0
+  \]
+  
+   \[
+  \frac{\partial \mathbb{E}[L]}{\partial y} = \frac{\partial }{\partial y} \iint\{y(\mathbf{x})-\mathbf{t}\}^{2}p(\mathbf{x},\mathbf{t})d\mathbf{x}d\mathbf{t} =0
+  \]
+  
+  \[
+  \frac{\partial \mathbb{E}[L]}{\partial y} = 2\int\{y(\mathbf{x})-\mathbf{t}\}p(\mathbf{x},\mathbf{t})d\mathbf{t} = \int y(\mathbf{x})p(\mathbf{x},\mathbf{t})d\mathbf{t}-\int\mathbf{t}p(\mathbf{x},\mathbf{t})d\mathbf{t}=0
+  \]
+  
+  \[ 
+  y(\mathbf{x}) \int p(\mathbf{x},\mathbf{t})d\mathbf{t} = \int\mathbf{t}p(\mathbf{t}|\mathbf{x}) p(\mathbf{x})d\mathbf{t}
+  \]
+  
+  \[
+   y(\mathbf{x}) p(\mathbf{x}) =  p(\mathbf{x})\int\mathbf{t}p(\mathbf{t}|\mathbf{x}) d\mathbf{t}
+  \]
+  
+  \[
+  y(\mathbf{x}) =  \int\mathbf{t}p(\mathbf{t}|\mathbf{x}) d\mathbf{t} = \mathbb{E}_{t}[\mathbf{t}|\mathbf{x}]
+  \]
+  
+  Portanto,
+  
+  %eq 1.89
+  \begin{equation}
+  	y(\mathbf{x})=\frac{\intop tp(\mathbf{x},t)dt}{p(\mathbf{x})}=\int tp(t|\mathbf{x})dt=\mathbb{E}_{t}[t|\mathbf{x}]                          
+  \end{equation} 
+
+\subsection{ Exerc\'icio 1.31}
+
+  A partir das propriedades da divergência de \textit{Kullback-Leibler}, vemos que $\mathbf{I}(\mathbf{x},\mathbf{y}) \geq 0$, com igualdade se, e somente se, $\mathbf{x}$ e $\mathbf{y}$ forem independentes. Utilizando as regras da soma e do produto da probabilidade, vemos que a informação mútua está relacionada à entropia condicional por meio da eq. 1.121 de \cite{Bishop2006}:
+  
+  \begin{equation}
+	\mathbf{I}[\mathbf{x},\mathbf{y}] = \mathbf{H}[\mathbf{y}]-\mathbf{H}[\mathbf{y}|\mathbf{x}]
+  \end{equation}
+
+ Onde $\mathbf{I}[\mathbf{x},\mathbf{y}]$ é a \textbf{informação mútua} entre as variáveis $\mathbf{x}$ e $\mathbf{y}$. Já $\mathbf{H}$ é a \textbf{entropia} de uma variável aleatória.
+ 
+ A partir da eq. 1.112
+ 
+ \begin{equation}
+ 	\mathbf{H}[\mathbf{x}, \mathbf{y}] = \mathbf{H}[\mathbf{y}|\mathbf{x}] + \mathbf{H}[\mathbf{x}]
+ \end{equation}
+ 
+ Então 
+ 
+   \[
+    \mathbf{H}[\mathbf{x}, \mathbf{y}] = \mathbf{H}[\mathbf{y}] -\mathbf{I}[\mathbf{x},\mathbf{y}]+ \mathbf{H}[\mathbf{x}]
+   \]
+   
+   \[
+   \mathbf{H}[\mathbf{x}, \mathbf{y}] \leq \mathbf{H}[\mathbf{x}] + \mathbf{H}[\mathbf{y}]  
+   \]
+   
+  \underline{Demonstração da independência estatística} \\
+  
+  A eq.1.104 de \cite{Bishop2006} define entropia como
+  
+  \begin{equation}
+  	\mathbf{H}[\mathbf{x}] = - \int p(\mathbf{x}) \ln p(\mathbf{x})d\mathbf{x}
+  \end{equation}
+  
+  
+  Então
+  
+  \[
+    \mathbf{H}[\mathbf{x}, \mathbf{y}] = \int \int p(\mathbf{x},\mathbf{y}) \ln \left\{ p(\mathbf{x},\mathbf{y}) \right\} d\mathbf{x}d\mathbf{y}
+  \]
+  
+  \[
+  \mathbf{H}[\mathbf{x}, \mathbf{y}] = \int \int p(\mathbf{x})p(\mathbf{y}) \ln \left\{ p(\mathbf{x})p(\mathbf{y}) \right\} d\mathbf{x}d\mathbf{y}
+  \]
+  
+  \[
+  \mathbf{H}[\mathbf{x}, \mathbf{y}] = \int \int p(\mathbf{x})p(\mathbf{y}) \left\{ \ln p(\mathbf{x})+ \ln p(\mathbf{y}) \right\} d\mathbf{x}d\mathbf{y} = \int \int p(\mathbf{y}) p(\mathbf{x}) \ln p(\mathbf{x}) d\mathbf{x}d\mathbf{y}+ \int \int p(\mathbf{x}) p(\mathbf{y})   \ln p(\mathbf{y}) d\mathbf{y} d\mathbf{x}
+  \]
+  
+  
+  Assim,
+  
+   \[
+   \mathbf{H}[\mathbf{x}, \mathbf{y}] =  \mathbf{H}[\mathbf{x}] +  \mathbf{H}[\mathbf{y}] = \mathbf{H}[\mathbf{y}|\mathbf{x}] + \mathbf{H}[\mathbf{x}]
+   \]
+   
+   \[
+   \mathbf{H}[\mathbf{y}] = \mathbf{H}[\mathbf{y}|\mathbf{x}]
+   \]
+  
+  Consequentemente, a partir da eq 1.121
+  \[
+  \mathbf{I}[\mathbf{x},\mathbf{y}] = 0
+  \]
+  
+  Portanto as variáveis $\mathbf{x}$ e $\mathbf{y}$ são independentes.
+  
+\subsection{ Exerc\'icio 1.33}
+
+ A entropia condicional de variáveis discretas $\mathbf{x}$ e $\mathbf{y}$ é
+ 
+ \begin{equation}
+ 	\mathbf{H}[y|x] = -\sum_{i} \sum_{j} p(x_{j},y_{i}) \ln p(y_{i}|x_{j})
+ \end{equation}
+
+ Utilizando a regra do produto e igualando $\mathbf{H}[y|x]$ a zero
+ 
+  \[
+    \mathbf{H}[y|x] = -\sum_{i} \sum_{j}p(y_{i}|x_{j}) p(x_{j}) \ln  p(y_{i}|x_{j}) = 0
+  \]
+  
+  Se $p(x) > 0$, resta analisar $p \ln p$:
+    
+  \begin{equation}
+   	\begin{cases}
+   			-p(y_{i}|x_{j}) \ln  p(y_{i}|x_{j}) = 0 & p(y_{i}|x_{j})= 0    \\            
+   			-p(y_{i}|x_{j}) \ln  p(y_{i}|x_{j}) = 0  & p(y_{i}|x_{j}) = 1                               
+   		\end{cases}
+   \end{equation}
+
+  Como 
+  
+   \[
+   \sum_{i} \sum_{j} p(y_{i}|x_{j})  = 1
+   \]
+   
+   Existe um $p(y_{i}|x_{i}) =1 $ e, o restante é zero.
+
+\subsection{ Exerc\'icio 1.37}
+
+ A partir das seguintes definições do livro texto do \cite{Bishop2006}
+ 
+ \begin{enumerate}
+ 	\item Equação 1.111
+ 	  
+ 	  \begin{equation}
+ 	  	\mathbf{H}[\mathbf{y}|\mathbf{x}] = - \int \int p(\mathbf{y},\mathbf{x}) \ln p(\mathbf{y}|\mathbf{x}) d\mathbf{y} d\mathbf{x} 
+ 	  \end{equation}
+ 	 
+ 	\item Equação 1.104
+ 	     \begin{equation}
+ 	        \mathbf{H}[\mathbf{x}] = - \int p(\mathbf{x}) \ln p(\mathbf{x})d\mathbf{x}
+ 	     \end{equation}
+ 	
+ 	
+ 	\item Marginalização da probabilidade conjunta de duas variáveis aleatórias $\mathbf{x}$ e $\mathbf{y}$.
+ 	     \begin{equation}
+ 	     	\int p(\mathbf{x}, \mathbf{y})dy = p (\mathbf{x})
+ 	     \end{equation}
+ 	
+ \end{enumerate}
+     
+     
+     \[
+       	\mathbf{H}[\mathbf{x}, \mathbf{y}] = - \int \int p(\mathbf{x}, \mathbf{y}) \ln p(\mathbf{x}, \mathbf{y}) d\mathbf{x} d\mathbf{y} = - \int \int p(\mathbf{x}, \mathbf{y}) \ln \left\{p(\mathbf{y}|\mathbf{x}) p(\mathbf{x})\right\} d\mathbf{x} d\mathbf{y}   
+     \]
+     
+     \[
+        \mathbf{H}[\mathbf{x}, \mathbf{y}] = - \int \int p(\mathbf{x}, \mathbf{y})  \left\{ \ln p(\mathbf{y}|\mathbf{x}) + \ln p(\mathbf{x})\right\} d\mathbf{x} d\mathbf{y} =  - \int \int p(\mathbf{x}, \mathbf{y})  \ln p(\mathbf{y}|\mathbf{x})  d\mathbf{x} d\mathbf{y} - \int \int p(\mathbf{x}, \mathbf{y})  \ln p(\mathbf{x}) d\mathbf{x} d\mathbf{y}
+     \]
+     
+     
+     \[
+        \mathbf{H}[\mathbf{x}, \mathbf{y}] = - \int \int p(\mathbf{x}, \mathbf{y})  \ln p(\mathbf{y}|\mathbf{x})  d\mathbf{x} d\mathbf{y} - \int p(\mathbf{x}) \ln p(\mathbf{x})d\mathbf{x} = \mathbf{H}[\mathbf{y}|\mathbf{x}] +  \mathbf{H}[\mathbf{x}]
+     \]
+
+\subsection{ Exerc\'icio 1.39}
+
+
+  \begin{table}[ht]
+  	\centering % Centraliza a tabela
+  	\caption{Distribuição das probabilidades de $x$ e $y$.}
+  	\label{prob}
+  	\begin{tabular}{cccc} % Define a quantidade de colunas
+  		\toprule % Linha superior
+  		             &      $y=0$       &  $y=1$   &   $p(x)$ \\ % Cabeçalhos
+  		\midrule % Linha média
+  		      $x=0$   &    $1/3$       &   $1/3$   &   $2/3$   \\ % linha de dados
+  	          $x=1$   &    $0$         &   $1/3$   &   $1/3$   \\ % linha de dados
+  	     \midrule
+  	         $p(y)$   &     $1/3$      &    $2/3$     &         \\ % linha de dados
+  	    \bottomrule  % Linha inferior
+  	\end{tabular}
+  \end{table}
+
+
+  \begin{table}[ht]
+  	\centering % Centraliza a tabela
+  	\caption{Condicional $p(x|y) = p(x,y)/p(y)$.}
+  	\label{cond1}
+  	\begin{tabular}{ccc} % Define a quantidade de colunas
+  		\toprule % Linha superior
+  	        	&      $y=0$       &  $y=1$   \\ % Cabeçalhos
+  		\midrule % Linha média
+  		$x=0$   &    $1$       &   $1/2$     \\ % linha de dados
+  		$x=1$   &    $0$         & $1/2$     \\ % linha de dados
+  		\bottomrule  % Linha inferior
+  	\end{tabular}
+  \end{table}
+
+  \begin{table}[ht]
+  	\centering % Centraliza a tabela
+  	\caption{Condicional $p(y|x) = p(x,y)/p(x)$.}
+  	\label{cond1}
+  	\begin{tabular}{ccc} % Define a quantidade de colunas
+  		\toprule % Linha superior
+  		&      $y=0$       &  $y=1$   \\ % Cabeçalhos
+  		\midrule % Linha média
+  		$x=0$   &    $1/2$       &   $1/2$     \\ % linha de dados
+  		$x=1$   &    $0$         &    $1$     \\ % linha de dados
+  		\bottomrule  % Linha inferior
+  	\end{tabular}
+  \end{table}
+  
+  \begin{itemize}
+  	\item [a)] 
+  	
+  	  \[
+  	  	H[x] = -\sum_{i} p(x_{i}) \ln p(x_{i}) = -\frac{2}{3} \ln \frac{2}{3} - \frac{1}{3} \ln \frac{1}{3} = -\frac{2}{3} \left(\ln 2 - \ln 3\right) - \frac{1}{3} \ln \left(\ln 1 - \ln 3\right) = -\frac{2}{3} \ln 2 + \frac{2}{3} \ln 3 +\frac{1}{3} \ln 3
+  	  \]
+  	  
+  	  \[
+  	    H [x] = \ln 3 -\frac{2}{3} \ln 2
+  	  \]
+  	
+  	\item [b)] 
+  	
+  	  \[
+  	    H [y] = -\frac{1}{3} \ln \frac{1}{3} -\frac{2}{3} \ln \frac{2}{3} = H[x]
+  	  \]
+  	  
+  	\item [c)]
+  	  
+  	  \[
+  	   H[y|x] = -\sum_{i} \sum_{j} p(x_{j},y_{i}) \ln p(y_{i}|x_{j}) = -\frac{1}{3} \ln 1 -\frac{1}{3} \ln \frac{1}{2} - 0 \ln 0 -\frac{1}{3} \ln \frac{1}{2} = -\frac{2}{3} \left(\ln 1 - \ln 2\right) = \frac{2}{3} \ln 2
+  	  \]
+  	 
+  	\item [d)] $H[x|y] = H[y|x]$
+  	\item [e)]
+  	    \[
+  	      H[x,y] = H[y|x]+H[x]= \frac{2}{3} \ln 2 + \ln 3 -  \frac{2}{3} \ln 2 = \ln 3
+  	    \]
+  	    
+  	\item [f)]
+  	    
+  	    \[
+  	      I[x,y] = H[x]-H[x|y]= \ln 3 - \frac{2}{3} \ln 2 - \frac{2}{3} \ln 2 = \ln 3 - \frac{4}{3} \ln 2
+  	    \]
+  	
+  	
+  \end{itemize}
+
+\subsection{ Exerc\'icio 1.41}
+
+  A partir da definição da eq.1.120 de \cite{Bishop2006} e da regra do produto $p(\mathbf{x},\mathbf{y})= p(\mathbf{y}|\mathbf{x}) p(\mathbf{x})$
+  
+  \begin{equation}
+  	I[\mathbf{x},\mathbf{y}] = - \int \int p(\mathbf{x},\mathbf{y}) \ln \left\{\frac{p(\mathbf{x}) p(\mathbf{y})}{p(\mathbf{x},\mathbf{y})}\right\} d \mathbf{x} d \mathbf{y}
+  \end{equation}
+   
+   \[
+    I[\mathbf{x},\mathbf{y}] = -\int \int p(\mathbf{x},\mathbf{y}) \left[\ln \left\{ p(\mathbf{x}) p(\mathbf{y})\right\} - \ln p(\mathbf{x},\mathbf{y})  \right] d \mathbf{x} d \mathbf{y}
+   \]
+   
+    \[ 
+         I[\mathbf{x},\mathbf{y}] = -\int \int p(\mathbf{x},\mathbf{y}) \left[\ln p(\mathbf{x}) + \ln p(\mathbf{y})- \ln p(\mathbf{x},\mathbf{y})  \right] d \mathbf{x} d \mathbf{y} = -\int \int p(\mathbf{x},\mathbf{y}) \left\{\ln p(\mathbf{x}) + \ln p(\mathbf{y})- \ln \left[p(\mathbf{y}|\mathbf{x})p(\mathbf{x})\right]  \right\} d \mathbf{x} d \mathbf{y}
+    \]
+    
+    
+     \[     
+      I[\mathbf{x},\mathbf{y}] = -\int \int p(\mathbf{x},\mathbf{y}) \left\{\ln p(\mathbf{x}) + \ln p(\mathbf{y})- \ln p(\mathbf{y}|\mathbf{x}) - \ln p(\mathbf{x}) \right\} d \mathbf{x} d \mathbf{y}  = 
+     \]
+     
+     \[
+       = -\int \int p(\mathbf{x},\mathbf{y}) \ln p(\mathbf{y})  d \mathbf{x} d \mathbf{y}  +\int \int p(\mathbf{x},\mathbf{y}) \ln p(\mathbf{y}|\mathbf{x})  d \mathbf{x} d \mathbf{y} 
+     \]
+     
+     
+     \[
+        I[\mathbf{x},\mathbf{y}] = -\int p(\mathbf{y}) \ln p(\mathbf{y}) d \mathbf{y} +\int \int p(\mathbf{x},\mathbf{y}) \ln p(\mathbf{y}|\mathbf{x})  d \mathbf{x} d \mathbf{y} = H [\mathbf{y}] + H [\mathbf{y}| \mathbf{x}]
+     \]
+
+\section{Exerc\'icios extras do livro texto}
+
+\subsection{E1}
+ 
+ Utilizando as seguintes definições:
+
+ \begin{itemize}
+ 	\item  A eq.1.1  do \cite{Bishop2006}:
+ 	%eq. 1.1 Bishop
+ 	\begin{equation}
+ 		y(x_{n},\mathbf{w})=w_{0}+w_{1}x_{n}+w_{2}x_{n}^{2}+\cdots+w_{M}x_{n}^{M}=\sum_{j=0}^{M}w_{j}x_{n}^{j}                               
+ 	\end{equation}
+ 	
+ 	\item A função objetivo abaixo (eq. 1.2 de \cite{Bishop2006}):
+ 	%eq. 1.2 Bishop 
+ 	\begin{equation}
+ 		E(\mathbf{w})=\frac{1}{2}\sum_{n=1}^{N}\left\{ y\left(x_{n}, \mathbf{w}\right)-t_{n}\right\} ^{2}                          
+ 	\end{equation}
+ 	
+ 	\item A parâmetro $M$ é a quantidade de coeficientes a serem ajustados durante o treinamento. 
+ 	
+ 	\item O $N$ é definido como a quantidade de dados de treinamento $x_{n}$ (ou $ \mathbf{x}_{n}$) e $t_{n}$; 	
+ \end{itemize}
+  
+  Reescrevendo $y(x_{n},\mathbf{w})$:
+  
+ \[
+  y_{n}(x_{n},\mathbf{w}) = \left[\begin{array}{ccccc}
+  	x^{0} & x^{1} & x^{2} & \cdots & x^{M}\end{array}\right]_{1\times M}^{T}\left[\begin{array}{c}
+ 	w_{0}\\
+ 	w_{1}\\
+ 	w_{2}\\
+ 	\vdots\\
+ 	w_{M}
+ \end{array}\right]_{M\times1}
+ \]
+ 
+ Generalizando o problema:
+ 
+ \[
+   \mathbf{A} \mathbf{w} =\mathbf{y}(\mathbf{x},\mathbf{w})
+ \]
+ 
+ \[
+ \left[\begin{array}{ccccc}
+ 	x_{0}^{0} & x_{0}^{1} & x_{0}^{2} & \cdots & x_{0}^{M}\\
+ 	x_{1}^{0} & x_{1}^{1} & x_{1}^{2} & \cdots & x_{1}^{M}\\
+ 	x_{2}^{0} & x_{2}^{1} & x_{2}^{2} & \cdots & x_{2}^{M}\\
+ 	\vdots & \vdots & \vdots & \ddots & \vdots\\
+ 	x_{N}^{0} & x_{N}^{1} & x_{N}^{2} & \cdots & x_{N}^{M}
+ \end{array}\right]_{N\times M}\left[\begin{array}{c}
+ 	w_{0}\\
+ 	w_{1}\\
+ 	w_{2}\\
+ 	\vdots\\
+ 	w_{M}
+ \end{array}\right]_{M\times1}=\left[\begin{array}{c}
+ 	y_{0}(x_{0},\mathbf{w})\\
+ 	y_{1}(x_{1},\mathbf{w})\\
+ 	y_{2}(x_{2},\mathbf{w})\\
+ 	\vdots\\
+ 	y_{N}(x_{N},\mathbf{w})
+ \end{array}\right]_{N\times1} = \mathbf{y}(\mathbf{x},\mathbf{w})
+ \]
+  
+  \[
+  E(\mathbf{w})=\left\Vert \left[\begin{array}{c}
+  	y_{0}(x_{0},\mathbf{w})\\
+  	y_{1}(x_{1},\mathbf{w})\\
+  	y_{2}(x_{2},\mathbf{w})\\
+  	\vdots\\
+  	y_{N}(x_{N},\mathbf{w})
+  \end{array}\right]_{N\times1}-\left[\begin{array}{c}
+  	t_{0}\\
+  	t_{1}\\
+  	t_{2}\\
+  	\vdots\\
+  	t_{n}
+  \end{array}\right]_{N\times1}\right\Vert _{2}^{2}\frac{1}{2}=\left\Vert \mathbf{y}-\mathbf{t}\right\Vert _{2}^{2}\frac{1}{2}
+  \]
+  
+  Ao realizar a minimização da função de custo $E(\mathbf{w})$, ou seja, derivando com relação ao $\mathbf{w}$ e igualando a zero, obtém-se o seguinte desenvolvimento e resultado:
+  
+  \[
+   \frac{\partial}{\partial \mathbf{w}} E(\mathbf{w}) =  \frac{\partial}{\partial \mathbf{w}}\frac{1}{2}  \left\Vert  \mathbf{A} \mathbf{w} -\mathbf{t}\right\Vert _{2}^{2}
+  \]
+  
+   \[
+  \frac{\partial}{\partial \mathbf{w}} E(\mathbf{w}) =  \frac{1}{2} 2 \left( \mathbf{A} \mathbf{w} -\mathbf{t} \right)^{T} \frac{\partial}{\partial \mathbf{w}} \left(\mathbf{A} \mathbf{w} -\mathbf{t}\right)^{T} = \left( \mathbf{A} \mathbf{w} -\mathbf{t} \right)^{T} \frac{\partial}{\partial \mathbf{w}}\mathbf{A} \mathbf{w}
+  \]
+  
+  \[
+  \frac{\partial}{\partial \mathbf{w}} E(\mathbf{w}) =   \left( \mathbf{A} \mathbf{w} -\mathbf{t} \right)^{T} \mathbf{A} \mathbf{I} = 0
+  \]
+  
+  
+  \[
+   \left( \mathbf{w}^{T} \mathbf{A}^{T}  -\mathbf{t}^{T} \right) \mathbf{A} = 0
+  \]
+  
+  \[
+    \mathbf{w}^{T} \mathbf{A}^{T}\mathbf{A}   -\mathbf{t}^{T}\mathbf{A}  = 0
+  \]
+    
+   \[
+    (\mathbf{A}^{T}\mathbf{A})^{T}\mathbf{w}   = \mathbf{A}^{T}\mathbf{t} 
+   \]
+    
+   \[
+   \mathbf{w} =  (\mathbf{A}^{T}\mathbf{A})^{-1} \mathbf{A}^{T}\mathbf{t} 
+  \]
+  
+  Em reconhecimento de reconhecimento de padrões, a utilização da notação vetorial e matricial - por exemplo, $\mathbf{y}=A\mathbf{w}$, onde $A$ representa a matriz de características e $\mathbf{w}$ o vetor de coeficientes (pesos) - oferece vantagens  em relação à representação por somatórios explícitos porque esta forma compacta, não apenas melhora a legibilidade e abstração dos modelos, mas também permite o uso direto de ferramentas da álgebra linear, como decomposições matriciais, regularização e projeções em subespaços. Além disso, essa notação se alinha naturalmente com implementações computacionais vetorizadas, exploradas em bibliotecas otimizadas como NumPy, TensorFlow ou PyTorch. Em tarefas como classificação, regressão ou redução de dimensionalidade (como PCA e LDA), a manipulação matricial é essencial para expressar relações entre variáveis, aplicar transformações lineares e derivar soluções fechadas para critérios de otimização.
+  
+
+\subsection{E2}
+
+  Utilizando as seguintes definições:
+  
+  \begin{itemize}
+  	\item  A eq.1.1  do \cite{Bishop2006}:
+  	%eq. 1.1 Bishop
+  	\begin{equation}
+  		y(x_{n},\mathbf{w})=w_{0}+w_{1}x_{n}+w_{2}x_{n}^{2}+\cdots+w_{M}x_{n}^{M}=\sum_{j=0}^{M}w_{j}x_{n}^{j}                               
+  	\end{equation}
+  	
+  	\item A função objetivo abaixo (eq. 1.4 de \cite{Bishop2006}):
+  	%eq 1.4 bishop
+  	\begin{equation}
+  		E(\mathbf{w})=\frac{1}{2}\sum_{n=1}^{N}\left\{ y\left(x_{n},\mathbf{w}\right)-t_{n}\right\} ^{2}+\frac{\lambda}{2}\Vert \mathbf{w}\Vert^{2}                               \label{eq101_ML}
+  	\end{equation}  	
+  \end{itemize}
+  
+  
+   \[
+  \frac{\partial}{\partial \mathbf{w}} E(\mathbf{w}) =   \left( \mathbf{A} \mathbf{w} -\mathbf{t} \right)^{T} \mathbf{A} \mathbf{I} + \frac{\lambda}{2}  \frac{\partial}{\partial \mathbf{w}} \Vert \mathbf{w}\Vert^{2} =  \left( \mathbf{A} \mathbf{w} -\mathbf{t} \right)^{T} \mathbf{A} \mathbf{I} + \frac{\lambda}{2} 2 \mathbf{w}^{T} \frac{\partial}{\partial \mathbf{w}}  \mathbf{w} = 0
+   \]
+  
+  \[
+   \frac{\partial}{\partial \mathbf{w}} E(\mathbf{w}) = \left( \mathbf{A} \mathbf{w} -\mathbf{t} \right)^{T} \mathbf{A} \mathbf{I} + \lambda \mathbf{w}^{T} \mathbf{I}
+  \]
+   
+   
+  \[
+  \mathbf{w}^{T} \mathbf{A}^{T}\mathbf{A}   -\mathbf{t}^{T}\mathbf{A} +  \lambda \mathbf{w}^{T} = 0
+  \]
+  
+  \[
+  (\mathbf{A}^{T}\mathbf{A})^{T}\mathbf{w} -\mathbf{A}^{T}\mathbf{t}  + \lambda \mathbf{w} =  0
+  \]
+  
+  \[
+    \mathbf{A}^{T}\mathbf{A}\mathbf{w}  + \lambda \mathbf{w} = \mathbf{A}^{T}\mathbf{t} 
+  \]
+  
+   \[
+    (\mathbf{A}^{T}\mathbf{A}  + \lambda) \mathbf{w} = \mathbf{A}^{T}\mathbf{t} 
+   \]
+   
+   \[
+    \mathbf{w} =  (\mathbf{A}^{T}\mathbf{A}  + \lambda)^{-1} \mathbf{A}^{T}\mathbf{t} 
+   \]
+
+\section{Exerc\'icios computacionais}
+
+ Esta parte da lista de exercícios consiste em replicar o experimento computacional de ajusta de curva polinomial (\textit{Polynomial Curve Fitting}) apresentado no primeiro capítulo do \cite{Bishop2006}.
+ 
+ Este exercício foi realizado na linguagem de programação \textbf{Python v3.8.18}, através do \textbf{Notebook Jupyter v.6.5.2} (Gerenciador Anaconda).
+ 
+  \begin{itemize}
+  	\item [a)] Replicar as figuras 1.4 e 1.6 do \cite{Bishop2006}.
+  	        
+  	     Primeiramente, os dados são gerados de acordo com o Apêndice A do \cite{Bishop2006}(\textit{Synthetic Data}). Os valores de entrada $x_{n}$ são gerados uniformemente no intervalo $(0, 1)$, e os \textit{targets} correspondentes  $t_{n}$ são obtidos a partir dos valores correspondentes da função $\sin (2 \pi x)$, e depois adicionando ruído branco com uma distribuição Gaussiana de desvio padrão $0,3$.  
+  	     
+  	     \begin{figure}[ht]
+  	     	\centering % Centraliza a figura
+  	     	\includegraphics[width=0.45 \textwidth]{fig/fig1_dados.png} % tamanho da img
+  	     	\caption{Dados sintéticos.} % Legenda da figura
+  	     	\label{dados} % Etiqueta para referência cruzada
+  	     \end{figure}  
+  	        
+  	     Posteriormente, foi realizado o ajuste de curva polinomial com base nos dados sintéticos para  cada grau escolhido, neste caso, conforme o livro (grau 0, 1,3 e 9). 
+  	     
+  	     
+  	     \begin{verbatim}
+  	     	n = 3                                           #quantidade de modelos
+  	     	M = [1, 3, 9]                                   #grau do polinomio (modelos)
+  	     
+  	     	intercept = np.zeros(n)
+  	     	coef = np.zeros((n, max(M)))
+  	     	X_new = np.arange(0., 1., 1/N).reshape(N,1) 
+  	     	Y = np.zeros((n,N))
+  	     	
+  	     	for i in range(n):
+  	     	poly_features = PolynomialFeatures(degree = M[i], include_bias=False)
+  	     	X_poly = poly_features.fit_transform(X)
+  	     	lin_reg = LinearRegression()
+  	     	lin_reg.fit(X_poly, t)
+  	     	intercept[i] = lin_reg.intercept_       #vetor de intercept de cada modelo
+  	     	y_aux = lin_reg.predict(poly_features.fit_transform(X_new))
+  	     	for j in range(M[i]):
+  	     	coef[i][j] = lin_reg.coef_[0][j]        #matriz com os coeficientes de cada modelo
+  	     	
+  	     	for k in range(N):
+  	     	Y [i][k] =  y_aux[k][0]                        
+  	     \end{verbatim}  
+  	     
+  	     
+  	     Assim a figura 1.4 do \cite{Bishop2006} foi replicada na \autoref{fig14} 
+  	     
+  	     \begin{figure}[ht]
+  	     	\centering % Centraliza a figura
+  	     	\includegraphics[width=1 \textwidth]{fig/fig14.png} % tamanho da img
+  	     	\caption{Ajusta da curva polinomial com base nos dados sintéticos para diferentes graus de liberdade.} % Legenda da figura
+  	     	\label{fig14} % Etiqueta para referência cruzada
+  	     \end{figure} 
+  	     
+  	     
+  	     Assim como foi apresentado no \cite{Bishop2006}, nota-se que para uma amostra com tamanho $N=10$, os modelos com graus de liberdade menor que 3 apresentam subajuste, ou seja, a complexidade do modelo é menor que a complexidade do problema. Por outro lado, considerando $M=9$ observa-se que a complexidade do modelo é maior do que a do problema em questão, levando a um super-ajuste, isto é, a curva tende a passar por todos os dados. O modelo aprende também o ruído dos \textit{targets}, fazendo com que o modelo tenha uma baixo viés, mas com alta variância. Isto faz com que o modelo preditivo tenha um baixa capacidade de generalização.
+  	     
+  	     Outro forma da avaliar que houve super ajuste é a magnitude dos coeficientes $\mathbf{w}$ calculados (ver \autoref{fig2}).
+  	     
+  	     \begin{figure}[ht]
+  	     	\centering % Centraliza a figura
+  	     	\includegraphics[width=0.7 \textwidth]{fig/fig2_plotcoef.png} % tamanho da img
+  	     	\caption{Coeficientes ajustados (peso $w_{n}$) para os valores de $M=1 ,3$ e $9$ respectivamente.} % Legenda da figura
+  	     	\label{fig2} % Etiqueta para referência cruzada
+  	     \end{figure} 
+  	     
+  	     
+  	     Quando há superajuste do modelo, os valores dos coeficientes atingem magnitudes muito alta.
+  	     
+  	     
+  	     Repetiu-se o experimento considerando o ajuste polinomial com grau 9 ($M=9$) para dados sintéticos com tamanho de amostra $N=15$ e $N=100$ (Replicar a figura 1.6 do \cite{Bishop2006}). Os resultados estão apresentados nas \autoref{fig3} e \autoref{fig4} respectivamente. 
+  	     
+  	     \begin{figure}[ht]
+  	     	\centering % Centraliza a figura
+  	     	\includegraphics[width=0.5 \textwidth]{fig/fig16_N15.png} % tamanho da img
+  	     	\caption{Ajuste da curva polinomial - $M=9$ e $N=15$.} % Legenda da figura
+  	     	\label{fig3} % Etiqueta para referência cruzada
+  	     \end{figure}
+  	     
+  	     
+  	     Novamente, quando tamanho de dados de treino $N=15$ o modelo fica super ajustado (\autoref{fig3}). Porém, quando o tamanho dos dados aumentam para $N=100$, o problema de super ajuste é resolvido (\autoref{fig4}). 
+  	     
+  	     O superajuste (ou \textit{overfitting}) tende a diminuir quando se aumenta o tamanho dos dados de treino porque o modelo passa a ter uma representação mais ampla e variada do problema que está tentando aprender. Com um conjunto de dados pequeno, o modelo pode facilmente memorizar os exemplos específicos de treinamento, incluindo o ruído e variações irrelevantes, em vez de aprender padrões gerais. Ao aumentar a quantidade de dados, o modelo é exposto a mais exemplos e variações, o que força o aprendizado de características mais robustas e generalizáveis. Isso torna mais difícil que o modelo se ajuste apenas às peculiaridades do conjunto de treinamento, resultando em melhor desempenho em dados novos e não vistos, e, consequentemente, em uma redução do superajuste.
+  	     
+  	     \begin{figure}[ht]
+  	     	\centering % Centraliza a figura
+  	     	\includegraphics[width=0.5 \textwidth]{fig/fig16_N100.png} % tamanho da img
+  	     	\caption{Ajuste da curva polinomial - $M=9$ e $N=100$.} % Legenda da figura
+  	     	\label{fig4} % Etiqueta para referência cruzada
+  	     \end{figure} 
+  	     
+  	     
+  	
+  	\item [b)] Simulação com base de dados sem relevância estatística.
+  	       
+  	       Nesta parte do problema foi gerada uma amostra de tamanho $N=50$ que não representa a população (ver \autoref{fig5}).
+  	       
+  	       \begin{figure}[ht]
+  	       	\centering % Centraliza a figura
+  	       	\includegraphics[width=0.5 \textwidth]{fig/fig3_dados.png} % tamanho da img
+  	       	\caption{Base de dados sem relevância estatística $N=50$.} % Legenda da figura
+  	       	\label{fig5} % Etiqueta para referência cruzada
+  	       \end{figure} 
+  	       
+  	       Considerando um polinômio de grau $M=4$, a curva ajustada ficou com o seguinte comportamento (\autoref{fig6})
+  	       
+  	       \begin{figure}[ht]
+  	       	\centering % Centraliza a figura
+  	       	\includegraphics[width=0.5 \textwidth]{fig/fig4_ajuste.png} % tamanho da img
+  	       	\caption{Ajuste polinimial  a partir de base de dados sem relevância estatística $N=50$ e $M=4$.} % Legenda da figura
+  	       	\label{fig6} % Etiqueta para referência cruzada
+  	       \end{figure} 
+  	       
+  	       Ter uma base de dados com relevância estatística é fundamental para garantir que as conclusões obtidas a partir dos dados sejam confiáveis, representativas e generalizáveis para o problema real que se deseja resolver. Uma base estatisticamente relevante possui tamanho suficiente e diversidade adequada para capturar a variabilidade dos dados do mundo real, reduzindo o risco de vieses.
+  	       
+  	       Se a base de dados for pequena ou mal distribuída, o modelo pode aprender padrões incorretos ou não representativos, levando a erros de generalização, superajuste, ou mesmo a decisões injustas em contextos sensíveis, como saúde ou finanças. Além disso, a relevância estatística é essencial para validar hipóteses com testes estatísticos, garantindo que os resultados obtidos não sejam fruto do acaso, mas sim de relações significativas nos dados.
+  	       
+  	       Em casos práticos com dimensão elevada (ou seja, quando o número de variáveis ou características dos dados é muito grande), a relação entre a relevância estatística da base de dados e a qualidade do modelo se torna ainda mais crítica. Esse cenário é conhecido como o problema da maldição da dimensionalidade (\textit{curse of dimensionality}), e afeta diretamente a generalização e o desempenho de modelos de reconhecimento de padrões.
+  	       
+  	       À medida que a dimensão cresce, os dados se tornam mais esparsos no espaço, e é necessário muito mais dados para cobrir esse espaço de forma representativa. Sem uma base estatisticamente relevante e suficientemente grande, os modelos tendem a superajustar ou simplesmente não aprender padrões úteis.
+  	       
+  	       Com muitos atributos, cresce a chance de encontrar relações aparentes entre variáveis e os \textit{targets} que não são verdadeiras, apenas fruto do acaso. Isso pode enganar o modelo, que aprende padrões sem significado real.
+  	       
+  	       Em resumo, o modelo com dados de treinamento que não sejam relevantes para o problema, isto é, em casos de dimensão elevada, em que há atributos com baixa ou nenhuma relação mútua com o os \textit{targets}, podem gerar modelos com baixíssima capacidade de generalização. O modelos final estará errado.  
+  	
+  	\item[c)] Simulação de base de dados com 1 \textit{outlier}.
+  	       
+  	       Um \textit{outlier} é um valor ou observação que se desvia significativamente do padrão geral dos dados, situando-se fora do intervalo onde a maioria dos valores se concentra. Esses pontos atípicos podem surgir por diversos motivos, como erros de medição, variabilidade natural extrema ou eventos raros. Sua presença pode distorcer análises estatísticas, afetar médias, variâncias e influenciar negativamente o desempenho de modelos de aprendizado de máquina, especialmente os mais sensíveis a variações nos dados. Identificar e tratar \textit{outliers} adequadamente é essencial para garantir a robustez e a confiabilidade das conclusões obtidas a partir dos dados.
+  	       
+  	       Nesta parte da resolução, foi acrescentado um \textit{outlier} nos dados sintéticos (ver \autoref{fig7})
+  	       
+  	       \begin{figure}[ht]
+  	       	\centering % Centraliza a figura
+  	       	\includegraphics[width=0.4 \textwidth]{fig/fig5_dadosout.png} % tamanho da img
+  	       	\caption{Dados sintéticos com 1 \textit{outlier} ($N=10$).} % Legenda da figura
+  	       	\label{fig7} % Etiqueta para referência cruzada
+  	       \end{figure}
+  	       
+  	       Os \textit{outliers} podem ter um impacto significativo e geralmente negativo em ajustes de curvas, especialmente quando se utilizam métodos que minimizam o erro quadrático médio (como a regressão linear clássica). Esses métodos são sensíveis a valores extremos, pois um único \textit{outlier} pode gerar um erro muito alto que domina a função de custo, fazendo com que a curva se ajuste de forma inadequada ao restante dos dados. 
+  	       
+  	       O resultado do ajuste polinomial com $M=3$ está na \autoref{fig8}. Um dado errado no conjunto de treinamento, dependendo do tamanho da amostra é capaz de alterar completamente o modelo preditivo, e o  modelo final estará errado.
+  	       
+  	       \begin{figure}[ht]
+  	       	\centering % Centraliza a figura
+  	       	\includegraphics[width=0.4 \textwidth]{fig/fig6_outlier.png} % tamanho da img
+  	       	\caption{Resultado com 1 \textit{outlier} ($N=10$ e $M=3$).} % Legenda da figura
+  	       	\label{fig8} % Etiqueta para referência cruzada
+  	       \end{figure}
+  	       
+  	       Principais impactos dos outliers em ajustes de curvas:
+  	       
+  	       \begin{enumerate}
+  	       	\item Desvio do modelo: a curva ajustada pode ser "puxada" em direção ao \textit{outlier}, desviando-se dos padrões reais da maioria dos dados. Isso reduz a capacidade de generalização do modelo.
+  	       	
+  	       	\item Aumento do erro global: O erro quadrático médio aumenta, pois estes pontos geram diferenças muito grandes entre os valores reais e os previstos, afetando negativamente as métricas de desempenho.
+  	       	
+  	       	\item Perda de interpretabilidade: O modelo ajustado pode se tornar menos intuitivo ou interpretável, refletindo padrões artificiais criados pela influência dos outliers.
+  	       	
+  	       	\item Necessidade de técnicas robustas: a presença de\textit{outliers} frequentemente exige o uso de métodos de ajuste mais robustos,ou técnicas de pré-processamento
+  	       	
+  	       \end{enumerate}
+  	  
+  	   Portanto, \textit{outliers} distorcem o ajuste de curvas ao introduzirem variações não representativas que afetam a forma da curva, o desempenho do modelo e a validade da análise. Por isso, é essencial identificá-los e tratá-los adequadamente durante a modelagem.
+  \end{itemize}
+
+\bibliographystyle{unsrt}
+\bibliography{lista1_referencias}
+
+\end{document}
