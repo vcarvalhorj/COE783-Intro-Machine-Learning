@@ -1,0 +1,626 @@
+%%
+%%Universidade Federal do Rio de Janeiro (UFRJ)
+%%Programa de Engenharia Civil da COPPE/UFRJ
+%%
+%%Disciplina: Introdução ao aprendizado de máquina (COE 782)
+%%Professor: Markus Vinicius Santos Lima
+%%
+%%Aluna: Vivian de Carvalho Rodrigues
+%%DRE:125228569
+%%
+%%Objetivo: Fazer um relatório da resolução dos exercícios da Lista 2 (Cap2 - Bishop)
+%%
+%%
+%%
+%%--------------------x---------------PREÂMBULO--------x---------------------------x-------------
+%%
+%%
+\documentclass{article}
+%
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[portuguese]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=1.5cm,bottom=2.5cm,left=3cm,right=1.5cm,marginparwidth=2cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{booktabs}% tabelas mais bonitas
+
+\title{UNIVERSIDADE FEDERAL DO RIO DE JANEIRO  \hspace{5cm}
+	   Programa de Engenharia Elétrica (COPPE/UFRJ) \hspace{5cm}
+	   COE 782 - Introdução ao aprendizado de máquina  \hspace{5cm} 
+	  Professor: Markus Vinicius Santos Lima}
+
+\author{Aluna: Vivian de Carvalho Rodrigues - DRE: 125228569  \\
+	    Programa de Engenharia Civil (COPPE/UFRJ)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Relatório da resolução dos exercícios da Lista 2 (Cap\'itulo 2 - Bishop \cite{Bishop2006})
+\end{abstract}
+
+\section{Exerc\'icios do livro texto}
+
+\subsection{ Exerc\'icio 2.1}
+
+ Para a resolução deste exercício, serão utilizadas as seguintes definições:
+ 
+ \begin{enumerate}
+ 	\item  Dada  a eq. 2.2 de \cite{Bishop2006} reproduzida abaixo:
+ 	
+ 	\begin{equation}
+ 		Bern (x|\mu) = \mu^{x}(1-\mu)^{1-x}
+ 	\end{equation}
+ 	
+ 	Onde a variável aleatória \textbf{binária} $x \in \left\{ 0,1 \right\} $ e, também, $p(x=1|\mu)=\mu$ e $p(x=0|\mu)=1-\mu$. 
+ 	
+ 	\item A equação 1.33 do \cite{Bishop2006}
+ 	
+ 	  \begin{equation}
+ 	     \mathbb{E}[f] = \sum_{x} p(x) f(x) 
+ 	  \end{equation}
+ 	  
+ 	  
+ 	\item A equação 1.39 da \cite{Bishop2006}
+ 	
+ 	 \begin{equation}
+ 	 	var[f] = \mathbb{E}[f(x)^2]-\mathbb{E}[f(x)]^2
+ 	 \end{equation}
+ 	
+ 	 \item A partir da definição de variância, também contida na resolução do exercício 1.8 da lista 1 (\cite{lista1})
+ 	 
+ 	   \begin{equation}
+ 	   	\mathbb{E}[(x-\mu)^{2}] = \sigma^2
+ 	   \end{equation}
+ 	
+  \end{enumerate}   
+ 	   
+   \textbf{Resolução do exercício:}
+   
+   \begin{itemize}
+   	\item Propriedade (2.257):
+   	
+   	 \[
+   	   \sum_{x=0}^{1} p(x|\mu) = p(x=0|\mu)+p(x=1|\mu) = 1-\mu+\mu = 1  
+   	 \]
+   	
+   	\item Propriedade (2.258):
+   	
+   	 \[
+   	  \mathbb{E}[x] = \sum_{x=0}^{1} x p(x|\mu) = 0p(x=0|\mu)+ 1p(x=1|\mu) = \mu  
+   	 \]
+   	
+   	\item Propriedade (2.259):
+   	
+   	 \[
+   	  var[x] = \sum_{x=0}^{1} (x-\mu)^{2} p(x|\mu) = \sum_{x=0}^{1} (x^{2}-2x\mu+\mu^{2})p(x|\mu) = \mu^{2}p(x=0|\mu) + (1-2\mu+\mu^{2})p(x=1|\mu)
+   	 \]
+   	 
+   	 \[
+   	   var[x]= \mu^{2}(1-\mu) +(1-2\mu+\mu^{2}) \mu = \mu^{2} - \mu^{3}+\mu -2\mu^{2}+\mu^{3}= \mu-\mu^{2}=\mu(1-\mu)
+   	 \]
+   	 
+   \end{itemize}
+   
+   A partir da definição de entropia abaixo (eq. 1.98 de \cite{Bishop2006}):
+   
+   \begin{equation}
+      	H[x] = - \sum_{x} p(x)\ln p(x)
+   \end{equation}
+ 	
+   Então, 
+   
+       \[
+         H[x] = -\sum_{x=0}^{1} \mu^{x}(1-\mu)^{1-x} \ln \left\{\mu^{x}(1-\mu)^{1-x}\right\} =  -\sum_{x=0}^{1} \mu^{x}(1-\mu)^{1-x} \left[ \ln \left\{ \mu^{x}\right\} + \ln \left\{(1-\mu)^{1-x}\right\} \right]
+       \]
+
+         
+       \[
+         H[x] = -\sum_{x=0}^{1} \mu^{x}(1-\mu)^{1-x} \left\{ x \ln \mu + (1-x) \ln (1-\mu)\right\}
+       \]  
+ 
+    Portanto,     
+         
+	   \[
+	     H[x] = -(1-\mu)\ln(1-\mu) - \mu\ln\mu
+	   \]
+
+
+\subsection{ Exerc\'icio 2.2}
+   
+  A partir das definições
+  
+  \begin{enumerate}
+  	\item  Dada  a eq. 2.2 de \cite{Bishop2006} reproduzida abaixo:
+  	
+  	\begin{equation}
+  		Bern (x|\mu) = \mu^{x}(1-\mu)^{1-x}
+  	\end{equation}
+  	
+  	Onde a variável aleatória \textbf{binária} $x \in \left\{ 0,1 \right\} $ e, também, $p(x=1|\mu)=\mu$ e $p(x=0|\mu)=1-\mu$. 
+  	
+  	\item Equação 2.261 do \cite{Bishop2006}:
+  	
+  	  \begin{equation}
+  	  	 p(x|\mu) = \left(\frac{1-\mu}{2}\right)^{(1-x)/2}\left(\frac{1+\mu}{2}\right)^{(1+x)/2}
+  	  \end{equation}
+  	
+  		Onde a variável aleatória \textbf{binária} $x \in \left\{ -1,1 \right\} $ e, também, $\mu \in \left[-1,1  \right]$. 
+  
+  \end{enumerate}
+   
+   \textbf{Resolução do exercício:}
+   
+   
+   \begin{itemize}
+   	\item [(i)] Verificação da distribuição normalizada
+   	
+   	  \[
+   	    \sum_{x=-1}^{1} p(x|\mu) = p (x=-1|\mu)+p(x=1|\mu) =  \left(\frac{1-\mu}{2}\right)^{1}\left(\frac{1+\mu}{2}\right)^{0}+ \left(\frac{1-\mu}{2}\right)^{0}\left(\frac{1+\mu}{2}\right)^{1} = \frac{1-\mu}{2} + \frac{1+\mu}{2} = 1
+   	   \]
+   	
+   	\item [(ii)] Verificação da média
+   	
+   	  \[
+   	   \sum_{x=-1}^{1} x p(x|\mu) = (-1) \left(\frac{1-\mu}{2} \right) + (1) \left(\frac{1+\mu}{2} \right) = \frac{-1+\mu}{2} + \frac{1+\mu}{2} = \mu
+   	  \]
+   	
+   	
+   	\item [(iii)] Verificação da Variância
+   	
+   	  \[
+   	   \sum_{x=-1}^{1} (x-\mu)^{2} p(x|\mu) = (-1-\mu)^{2} \left( \frac{1-\mu}{2} \right) + (1-\mu)^{2} \left( \frac{1+\mu}{2} \right) = (1+2\mu+\mu^{2})\left( \frac{1-\mu}{2} \right) + (1-2\mu+\mu^{2})\left( \frac{1+\mu}{2} \right)
+   	  \]
+   	  
+   	  
+   	  \[
+   	     \sum_{x=-1}^{1} (x-\mu)^{2} p(x|\mu) = \frac{1+2\mu+\mu^{2}-\mu-2\mu^{2}-\mu^{3}}{2} + \frac{1-2\mu+\mu^{2}+\mu-2\mu^{2}+\mu^{3}}{2} = 1-\mu^{2}
+   	  \]
+   	 
+   	
+   	\item [(iv)] Verificação da Entropia
+   	
+   	 \[
+   	  H[x]=-\sum_{x=-1}^{1} p(x) \ln p(x)= 
+   	 \]
+   	
+   	\[
+   	 = - \sum_{x=-1}^{1} \left(\frac{1-\mu}{2}\right)^{(1-x)/2}\left(\frac{1+\mu}{2}\right)^{(1+x)/2} \left\{ \left(\frac{1-x}{2}\right) \ln \left(\frac{1-\mu}{2}\right) +\left(\frac{1+x}{2}\right) \ln \left(\frac{1+\mu}{2}\right)  \right\}
+   	\]
+   	
+   	\[
+   	 = \left(\frac{1-\mu}{2}\right) \ln \left(\frac{1-\mu}{2}\right) +\left(\frac{1+\mu}{2}\right) \ln \left(\frac{1+\mu}{2}\right)
+   	\]
+   	
+   	
+   \end{itemize}
+    
+\subsection{ Exerc\'icio 2.8}
+
+ Relembrando as definições:
+ 
+ \begin{itemize}
+ 	\item Equação 1.34 do \cite{Bishop2006}
+ 	
+ 	  \begin{equation}
+ 	  	\mathbb{E}[f(x)] = \int p(x)f(x)dx
+ 	  \end{equation}
+ 	  
+ 	 Considerando $f(x)$ uma variável aleatória (da mesma forma $ \mathbb{E}[x]= \int p(x)x dx$ se a VA é $x$).
+ 	 
+ 	 \item Baseado na definição da eq. 1.37 do \cite{Bishop2006}, o valor esperado condicional é 
+ 	 
+ 	   \[
+ 	     \mathbb{E}_{x}[x|y]=\int p(x|y)xdx
+ 	   \]
+ 	   
+ 	   onde $x$ e $y$ são variáveis aleatórias contínuas (da mesma forma $\mathbb{E}_{y}[f(y)]= \int p(y) f(y)dy$).  
+ 	   
+ 	   
+ 	   \item  A regra do produto $p(x,y)=p(y|x)p(x)=p(x|y)p(y)$ 
+ 	   
+ 	   \item Equação 1.40 de \cite{Bishop2006}
+ 	   
+ 	     \[
+ 	      var[x] = \mathbb{E}[x^{2}]- \mathbb{E}[x]^{2}
+ 	     \]
+ 	     
+ 	   \item Variância Condicional
+ 	   
+ 	     \[
+ 	       var_{x}[x|y]=\mathbb{E}_{x}[x^{2}|y]-\mathbb{E}_{x}[x|y]^{2}
+ 	     \]  
+ 	
+ \end{itemize}
+ 
+ 
+  Assim,
+  
+  \[
+   \mathbb{E}_{y}[\mathbb{E}_{x}[x|y]] = \int p(y) \left[\int p(x|y)xdx \right] dy = \int \int x p(x|y)p(y) dx dy 
+  \]
+ 
+  \[
+  \mathbb{E}_{y}[\mathbb{E}_{x}[x|y]] = \int \int x p(x,y) dy dx = \int x p(x) dx = \mathbb{E}[x]
+  \]
+ 
+ e
+ 
+  \[
+    \mathbb{E}_{y}[var_{x}[x|y]]+var_{y}[\mathbb{E}_{x}[x|y]]= \mathbb{E}_{y}[\mathbb{E}_{x}[x^{2}|y]-\mathbb{E}_{x}[x|y]^{2}]+ \mathbb{E}_{y}[\mathbb{E}_{x}[x|y]^{2}]-\mathbb{E}_{y}[\mathbb{E}_{x}[x|y]]^{2}
+  \]   
+  
+  \[
+   \mathbb{E}_{y}[\mathbb{E}_{x}[x^{2}|y]] -\mathbb{E}_{y}[\mathbb{E}_{x}[x|y]^{2}]+\mathbb{E}_{y}[\mathbb{E}_{x}[x|y]^{2}]-\mathbb{E}_{y}[\mathbb{E}_{x}[x|y]]^{2} = \mathbb{E}[x^{2}]- \mathbb{E}[x]^{2}=var[x]
+  \]
+
+\subsection{ Exerc\'icio 2.12}
+
+    Considerando a distribuição uniforme para a variável aleatória contínua $x$  definida por
+    
+     \[ 
+       U(x|a,b)= \frac{1}{b-a}
+     \]
+     
+    onde $a \leq x \leq b$.
+    
+    \begin{enumerate}
+    	\item [(i)] Verificação se a distribuição é normal
+    	
+    	\[
+    	 \int_{a}^{b} U(x|a,b) dx = \frac{1}{b-a} \int_{a}^{b} 1 dx = \left[\frac{x}{b-a}\right]_{a}^{b}= \frac{b}{b-a} -\frac{a}{b-a}= 1
+    	\]
+    	
+    	\item[(ii)] Média
+    	
+    	\[
+    	  \mu = \int_{a}^{b} x U(x|a,b) dx = \frac{1}{b-a} \int_{a}^{b} x dx = \frac{1}{2(b-a)} \left[x^{2}\right]_{a}^{b}=\frac{b^{2}-a^{2}}{2(b-a)}=\frac{b+a}{2}
+    	\]
+    	
+    	
+    	\item[(iii)] Variância
+    	
+        \[
+         \int_{a}^{b} (x-\mu)^{2} U(x|a,b) dx = \int_{a}^{b} (x-\frac{b+a}{2})^{2} \frac{1}{b-a} dx = \frac{1}{b-a}\frac{1}{3} \left[\left(x- \frac{b+a}{2}\right)^{3}\right]_{a}^{b} =
+        \]	   
+    
+       \[
+           = \frac{1}{3(b-a)}\left[\left(b-\frac{b+a}{2}\right)^{3}-\left(a-\frac{b+a}{2}\right)^{3}\right] =  \frac{1}{3(b-a)}\left[\left(\frac{b-a}{2}\right)^{3}-\left(\frac{a-b}{2}\right)^{3}\right] = \frac{2(b-a)^{3}}{24(b-a)} = \frac{(b-a)^{2}}{12}
+       \]
+    
+    \end{enumerate} 
+   
+\subsection{ Exerc\'icio 2.13}
+     
+     De acordo com  \cite{Bishop2006}, a \textbf{entropia relativa} ou divergência de \textit{Kullback-Leibler} é dada pela seguinte expressão (equação 1.113 do \cite{Bishop2006})
+     
+     \[
+       KL(p || q) = - \int p(\textbf{x}) \ln q(\textbf{x})d\textbf{x} - \left(-\int p(\textbf{x}) \ln p (\textbf{x}) d\textbf{x} \right) = - \int p(\textbf{x}) \ln \left\{\frac{q(\textbf{x})}{p(\textbf{x})}\right\} d\textbf{x}
+     \]
+   
+   
+   \begin{itemize}
+   	\item [a)]  Se $q(\textbf{x}) = p(\textbf{x})$:
+   	     
+   	     \[
+   	       KL(p || q) = 0
+   	     \]
+   	
+     Portanto, não há divergência.  	
+    	
+   	\item [b)] Considerando que ambas as pdfs possuem a mesma média ($\boldsymbol{\mu} = \textbf{m}$):
+   	
+   	
+   	  \[
+   	  KL(p || q) = - \int p(\textbf{x}) \ln \left\{\frac{q(\textbf{x})}{p(\textbf{x})}\right\} d\textbf{x} = \int p(\textbf{x}) \left\{ \ln  q(\textbf{x}) - \ln p(\textbf{x}) \right\}
+   	  \]
+   	   
+   	   
+   	  A partir da definição 2.118 do \cite{Bishop2006}, para $N=1$:
+   	  
+   	  \[
+   	    \ln p(\mathbf{x}) = - \frac{D}{2} \ln (2\pi) - \frac{1}{2} \ln{|\boldsymbol{\Sigma}|} - \frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{T}\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})
+   	  \] 
+   	  
+   	  e
+   	  
+   	   \[
+   	  \ln q(\mathbf{x}) = - \frac{D}{2} \ln (2\pi) - \frac{1}{2} \ln{|\mathbf{L}|} - \frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{T} \mathbf{L}^{-1}(\mathbf{x}-\boldsymbol{\mu})
+   	  \] 
+   	  
+   	  
+   	 Então
+   	 
+   	 \[
+   	 \ln  q(\textbf{x}) - \ln p(\textbf{x}) =  - \frac{1}{2} \ln{|\mathbf{L}|} + \frac{1}{2} \ln{|\boldsymbol{\Sigma}|} -\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{T} \mathbf{L}^{-1}(\mathbf{x}-\boldsymbol{\mu})+ \frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{T}\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})
+   	 \] 
+   	 
+   	 
+   	 Multiplicando os termos acima por $p(\textbf{x})$ e realizando a integração:
+   	 
+   	 \[
+   	     - \frac{1}{2} \ln{|\mathbf{L}|} + \frac{1}{2} \ln{|\boldsymbol{\Sigma}|} -\frac{1}{2}  \int p(\textbf{x})(\mathbf{x}-\boldsymbol{\mu})^{T} \mathbf{L}^{-1}(\mathbf{x}-\boldsymbol{\mu})d\textbf{x}+ \frac{1}{2} \int p(\textbf{x})(\mathbf{x}-\boldsymbol{\mu})^{T}\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})d\textbf{x}
+   	 \]
+   	 
+   	 Para realizar as integrações acima, serão utilizadas as equações 2.44, 2.50 e 2.56 do \cite{Bishop2006}.
+   	 
+   	  \[
+   	    (\mathbf{x}-\boldsymbol{\mu})^{T} \mathbf{L}^{-1}(\mathbf{x}-\boldsymbol{\mu}) = \varDelta^{2} = \sum_{i=1}^{D} \frac{y_{i}}{\lambda_{i}}
+   	  \] 
+   	  
+   	  e
+   	  \[
+   	     p(\mathbf{y})=p(\textbf{x})|\mathbf{J}| = \prod_{j=1}^{D} \frac{1}{(2 \pi \lambda_{j})^{1/2}} \exp \left\{ \frac{-y^{2}_{j}}{2 \lambda_{j}} \right\}
+   	  \]
+   	  
+   	  Onde $y_{i} = \mathbf{u}_{i}^{T}(\mathbf{x}-\boldsymbol{\mu})$ é uma nova coordenada de referência. Assim as integrações acima ficam de seguinte maneira:
+   	  
+   	  \[
+   	   \int \varDelta^{2} p(\textbf{x}) d\textbf{x} = \int \sum_{i=1}^{D} \frac{y_{i}}{\lambda_{i}}\prod_{j=1}^{D} \frac{1}{(2 \pi \lambda_{j})^{1/2}} \exp \left\{ \frac{-y^{2}_{j}}{2 \lambda_{j}} \right\} d y_{j}
+   	  \]
+   	  
+   	  \[
+   	    \int \varDelta^{2} p(\textbf{x}) d\textbf{x} = \sum_{i=1}^{D} \int  \frac{y_{i}}{\lambda_{i}}\prod_{j=1}^{D} \frac{1}{(2 \pi \lambda_{j})^{1/2}} \exp \left\{ \frac{-y^{2}_{j}}{2 \lambda_{j}} \right\} d y_{j} = \sum_{i=1}^{D} \prod_{j=1}^{D} \frac{1}{(2 \pi \lambda_{j})^{1/2}} \int \frac{y_{i}}{\lambda_{i}} \exp \left\{ \frac{-y^{2}_{j}}{2 \lambda_{j}} \right\} d y_{j}
+   	  \]
+   	  
+   	  Como foi verificado no exercício 1.7 da \cite{lista1}.
+   	  
+   	  \[
+   	    \frac{1}{(2 \pi \sigma^{2})^{1/2}} \int \exp \left\{ -\frac{x^{2}}{2 \sigma^2} \right\} dx =  \frac{1}{(2 \pi \sigma^{2})^{1/2}} \int  \frac{x^{2}}{\sigma^{2}} \exp \left\{ -\frac{x^{2}}{2 \sigma^2} \right\} dx = 1
+   	  \]
+   	
+   	 Então
+   	  \[
+   	    \int \varDelta^{2} p(\textbf{x}) d\textbf{x} =  \sum_{i=1}^{D} 1 = D
+   	  \]
+   \end{itemize}
+   
+    Portanto 
+    
+    
+    \[
+      KL(p || q) = - \frac{1}{2} \ln{|\mathbf{L}|} + \frac{1}{2} \ln{|\boldsymbol{\Sigma}|} -\frac{D}{2} + \frac{D}{2}
+    \]
+     
+     
+     \[
+     KL(p || q) = - \frac{1}{2} \ln{|\mathbf{L}|} + \frac{1}{2} \ln{|\boldsymbol{\Sigma}|} 
+     \]
+    
+  
+\subsection{ Exerc\'icio 2.15}
+ 
+    A gaussiana multivariada é dada pela seguinte expressão (eq. 2.43 do \cite{Bishop2006}):
+    
+   %eq 2.43
+   \begin{equation}
+   	\mathcal{N}(\mathbf{x}|\boldsymbol{\mu},\boldsymbol{\Sigma})=\frac{1}{(2\pi)^{D/2}}\frac{1}{\boldsymbol{\Sigma}^{1/2}}\exp\left\{ -\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{T} \boldsymbol{\Sigma}^{-1} (\mathbf{x}-\boldsymbol{\mu})\right\}                             
+   \end{equation}
+   
+   E, a  partir da eq.1.104 do \cite{Bishop2006}, entropia é calculada como
+   
+   %Eq.1.104
+   \begin{equation}
+   	\mathbf{H}[\mathbf{x}] = - \int p(\mathbf{x}) \ln p(\mathbf{x})d\mathbf{x}
+   \end{equation}
+   
+   Assim,
+    \[
+      \mathbf{H}[\mathbf{x}] = - \int p(\mathbf{x}) \left\{  - \frac{D}{2} \ln (2\pi) - \frac{1}{2} \ln{|\boldsymbol{\Sigma}|} - \frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{T}\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}) \right\}
+    \]
+  
+   Como foi verificado no exercício 2.13 que
+   
+   \[
+    \int p(\textbf{x})(\mathbf{x}-\boldsymbol{\mu})^{T}\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})d\textbf{x} = D
+   \]
+   
+   Então
+   
+   \[
+      \mathbf{H}[\mathbf{x}] = \frac{D}{2} \ln (2\pi) + \frac{1}{2} \ln{|\boldsymbol{\Sigma}|} + \frac{D}{2}
+   \]
+    
+\subsection{ Exerc\'icio 2.20}
+
+   Para a resolução desta questão será utilizada e expressão dos autovetores da matriz de covariância $\boldsymbol{\Sigma}$ (eq.2.45 do \cite{Bishop2006})
+   
+    \begin{equation}
+    	\boldsymbol{\Sigma} \mathbf{u}_{i} = \lambda_{i}\mathbf{u}_{i}
+    \end{equation}
+    
+   Para que $\boldsymbol{\Sigma}$ seja positivo definido, $\lambda_{i} > 0$. Considerando $\mathbf{a} = \sum_{i} \alpha_{i} \mathbf{u}_{i}$
+   
+   \[
+    \mathbf{a}^{T}\boldsymbol{\Sigma} \mathbf{a} = \mathbf{a}^{T}\boldsymbol{\Sigma} \sum_{i} \alpha_{i} \mathbf{u}_{i} = \mathbf{a}^{T} \sum_{i} \alpha_{i}\boldsymbol{\Sigma}\mathbf{u}_{i} =  \mathbf{a}^{T} \sum_{i} \alpha_{i}\lambda_{i}\mathbf{u}_{i} 
+   \] 
+   
+   \[
+   \mathbf{a}^{T}\boldsymbol{\Sigma} \mathbf{a} = \sum_{j} \alpha_{j}\mathbf{u}^{T}_{j} \sum_{i} \alpha_{i}\lambda_{i}\mathbf{u}_{i} = \sum_{i} \alpha^{2}_{i}\lambda_{i}
+   \]
+   
+   
+   
+   Desta forma, $ \mathbf{a}^{T}\boldsymbol{\Sigma} \mathbf{a} > 0$ se $\lambda_{i} >0$. 
+   
+   
+   Nota: Os autovetores são escolhidos no formato ortonormal, ou seja (eq. 2.46 do \cite{Bishop2006}):
+      
+   \[
+   \mathbf{u}^{T}_{j} \mathbf{u}_{i}=
+   \begin{cases} 
+   	1, & \text{se } i = j \\
+   	0, & \text{se } i \neq 0
+   \end{cases}
+   \]
+
+\section{Exerc\'icios computacionais}
+
+ Os exercício foram realizados na linguagem de programação \textbf{Python v3.8.18}, através do \textbf{Notebook Jupyter v.6.5.2} (Gerenciador Anaconda).
+ 
+ Neste relatório estão apresentados uma breve discussão sobre os resultados encontrados. O código completo de cada exercício se encontram nos anexos (Impressão do Notebook Jupyter). 
+
+ \subsection{ Exerc\'icio E1 - Infer\^encia Bayesiana Sequencial}
+ 
+  Como foi estudado no Cap.2 do \cite{Bishop2006}, a distribuição Beta conjuga bem com a distribuição Binomial.  E estas distribuições são utilizadas quando as \textbf{variáveis aleatórias discretas binárias}.
+  
+  Primeiramente, estas distribuições foram estudadas separadamente simulando as figuras 2.1 e 2.2 do \cite{Bishop2006}.
+  
+  A distribuição Beta está reproduzida na \autoref{beta} e, a binomial, na \autoref{binomial}.
+  
+  \begin{figure}[ht]
+  	\centering % Centraliza a figura
+  	\includegraphics[width=0.4 \textwidth]{fig/beta.png} % tamanho da img
+  	\caption{Verificação da distribuição Beta - reprodução da figura 2.2 do \cite{Bishop2006}} % Legenda da figura
+  	\label{beta} % Etiqueta para referência cruzada
+  \end{figure} 
+  
+  \begin{figure}[ht]
+  	\centering % Centraliza a figura
+  	\includegraphics[width=0.4 \textwidth]{fig/binomial.png} % tamanho da img
+  	\caption{Verificação da distribuição Binomial - reprodução da figura 2.1 do \cite{Bishop2006}} % Legenda da figura
+  	\label{binomial} % Etiqueta para referência cruzada
+  \end{figure} 
+  
+  Após verificar cada distribuição, a figura 2.3 do \cite{Bishop2006} foi reproduzida para uma ensaio de 1 jogada da moeda, tanto para $m = 1$ (cara) como para $m = 0$ (corroa). Aplicou-se a inferência Baysiana considerando a distribuição a \textbf{priori} como Beta e \textbf{verossimilhança} com a distribuição Binomial. 
+  
+  Neste caso foram considerados $a=b=2$ e $p(x)=0.5$. Os resultados estão na \autoref{1jogada}.
+  
+  \begin{figure}[ht]
+  	\centering % Centraliza a figura
+  	\includegraphics[width=0.6 \textwidth]{fig/1jogada.png} % tamanho da img
+  	\caption{Verificação de 1 jogada (cara ou coroa) - reprodução da figura 2.3 do \cite{Bishop2006} - $a=b=2$ e $\mu=0.5$} % Legenda da figura
+  	\label{1jogada} % Etiqueta para referência cruzada
+  \end{figure} 
+  
+  
+  A partir de agora o modelo está pronto e, portanto, serão simuladas 5 jogadas amostradas da distribuição \textbf{Bernoulli} com probabilidade $\mu=0.7$ de cair cara ($m=1$). As jogadas aleatórias são $\mathbf{t}=\left\{1,1,0,0,1\right\}$.
+  
+  O experimento foi repetido para o caso $a=b=2$ e $a=b=1$. Ambos considerando $p(x)=0.5$. Os resultados de todas a jogadas estão no anexo E.1 deste exercício.
+  
+  Com base na simulação de cinco jogadas de moedas, utilizando uma distribuição Beta como distribuição a priori e a Binomial como verossimilhança, foi possível observar como a informação prévia influencia a construção da distribuição a posteriori, especialmente na primeira jogada, a distribuição a priori exerce forte influência sobre os resultados inferenciais, refletindo-se diretamente na forma da posteriori obtida.
+  
+  No entanto, à medida que o número de jogadas aumenta, a influência da distribuição a priori diminui gradualmente, fazendo com que distribuições a priori diferentes conduzam a distribuições a posteriori cada vez mais semelhantes. Isso ilustra um dos princípios fundamentais da inferência bayesiana: com dados suficientes, a verossimilhança tende a dominar a influência da priori, levando à convergência da distribuição a posteriori independentemente da escolha inicial da distribuição a priori. 
+ 
+ \subsection{ Exerc\'icio E2 - Verifica{\c c}\~ao experimental do Teorema Central do Limite}
+ 
+  Para este exercício foram consideradas as seguintes distribuições:
+  
+  \begin{itemize}
+  	\item Uniforme (0,1) no intervalo 0 a 1.
+  	\item Bernoulli com probabilidade $\mu=0.4$. 
+  \end{itemize}
+  
+  Os detalhes estão apresentados no anexo E.2. O  resultado final da vefificação do Teorema Central do Limite se encontra na \autoref{TCL}.
+  
+  \begin{figure}[ht]
+  	\centering % Centraliza a figura
+  	\includegraphics[width=0.6 \textwidth]{fig/TCL.png} % tamanho da img
+  	\caption{Verificação do Teorema Central do Limite - $N=500$ variáveis com $n=100$ registros.} % Legenda da figura
+  	\label{TCL} % Etiqueta para referência cruzada
+  \end{figure} 
+  
+  Ao somar 500 variáveis aleatórias independentes com distribuições Uniforme e Bernoulli, foi possível observar empiricamente a convergência das distribuições resultantes para uma forma aproximadamente Gaussiana. Esse comportamento é uma ilustração prática do Teorema Central do Limite, que afirma que, sob certas condições, a soma (ou média) de um grande número de variáveis aleatórias independentes tende a seguir uma distribuição Normal, independentemente da distribuição original de cada variável.
+  
+  O experimento mostra que, tanto variáveis originalmente contínuas (como as Uniformes) quanto discretas (como as Bernoulli) obedecem a esse princípio, desde que sejam independentes e tenham variância finita. Assim, o exercício reforça a importância do Teorema Central do Limite como ferramenta teórica e prática para justificar o uso da distribuição Normal em diversas aplicações estatísticas.
+  
+  
+ \subsection{ Exerc\'icio E3 -Verifica{\c c}\~ao experimental do \textit{Law of Large Numbers} - LLN}
+  
+  Para a verificação experimental da Lei dos grandes números foram consideradas $N=500$ variáveis aleatórias com $n=100$ registros a partir de uma distribuição normal padrão (Gaussiana de média $0$ e variância $1$).
+  
+  O código completo encontra-se no anexo E.3. 
+  
+  O resultado para $N=1$ e $N=500$  está na \autoref{LLN} 
+   
+    \begin{figure}[ht]
+   	\centering % Centraliza a figura
+   	\includegraphics[width=0.7 \textwidth]{fig/LLN.png} % tamanho da img
+   	\caption{Verificação da Lei dos Grandes Números - Comparativo entre $N=1$ e $N=500$ variáveis com $n=100$ registros.} % Legenda da figura
+   	\label{LLN} % Etiqueta para referência cruzada
+   \end{figure} 
+  
+  
+  Observou-se que a média amostral de cada conjunto tende a se concentrar em torno do valor esperado à medida que o número de amostras aumenta. Isso se refletiu no formato do histograma do estimador, que se tornou progressivamente mais estreito conforme $N$ crescia, evidenciando a diminuição da variância e o aumento da precisão da estimativa da média populacional. Esse comportamento está de acordo com o previsto teoricamente, reforçando a compreensão empírica da Lei dos Grandes Números.
+ 
+ \subsection{ Exerc\'icio E4 - Estimação de pdf}
+ 
+ Os \textbf{métodos paramétricos} de estimativa de densidade de probabilidade (pdf) assumem que os dados seguem uma distribuição conhecida (como normal, exponencial, etc.), e a tarefa é estimar os parâmetros dessa distribuição com base nos dados. No entanto, quando não se quer assumir uma forma específica para a distribuição, utilizam-se \textbf{métodos não paramétricos}, como o histograma e o método kernel. O histograma é uma técnica simples e intuitiva: ele divide o eixo dos dados em intervalos (ou\textit{bins}) de largura fixa e conta quantas observações caem em cada intervalo. A densidade é então estimada pela frequência relativa de observações em cada \textit{bin} dividida pela largura do \textit{bin}. Apesar de sua simplicidade, o histograma depende fortemente da escolha da largura e da posição dos \textit{bin}, o que pode afetar significativamente a suavidade e a precisão da estimativa.
+ 
+ O método kernel, por sua vez, oferece uma abordagem mais refinada e contínua para estimar a densidade. Em vez de contar observações em intervalos fixos, ele coloca uma função de suavização (chamada de \textbf{função kernel}, como a gaussiana) centrada em cada ponto de dado. A estimativa da densidade em qualquer ponto é obtida somando essas funções kernel, ponderadas por um parâmetro de suavização conhecido como largura de banda (ou \textit{bandwidth}). Essa técnica produz curvas de densidade suaves e é menos sensível à escolha da posição dos pontos do que o histograma. No entanto, a escolha adequada da largura de banda é crucial: valores muito pequenos levam a uma estimativa muito ruidosa, enquanto valores muito grandes podem ocultar características importantes da distribuição dos dados.
+ 
+ Foi gerada uma amostra com $N=50$ dados cuja a distribuição é dada pela mistura de $2$ gaussianas de acordo com a equação 2.188 do \cite{Bishop2006} (representação da curva verde das figuras 2.24 e 2.25).
+ 
+    \begin{equation}
+    	p(\mathbf{x})= \sum_{k=1}^{K} \pi_{k} \mathcal{N}(\mathbf{x}|\boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k})
+    \end{equation}
+ 
+ A pdf do modelo gerador dos dados foi estimado utilizando o histograma e o kernel Gaussiano. Foram  utilizados os mesmos parâmetros $h$ das figuras reproduzidas do livro(\cite{Bishop2006}). O código completo está no anexo E.4. 
+ 
+ Os resultados estão na \autoref{param}.
+ 
+  \begin{figure}[ht]
+ 	\centering % Centraliza a figura
+ 	\includegraphics[width=0.6 \textwidth]{fig/parametricos.png} % tamanho da img
+ 	\caption{Estimativa de pdf pelo histograma(esquerdo) e pelo método kernel(direito).} % Legenda da figura
+ 	\label{param} % Etiqueta para referência cruzada
+ \end{figure} 
+ 
+ 
+ 
+ \subsection{ Exerc\'icio E5 - Classificador K-NN}
+ 
+  O KNN (\textit{K-Nearest Neighbors}) é um modelo de classificação baseado em instâncias que não faz suposições explícitas sobre a distribuição dos dados. Ele funciona identificando os $k$ vizinhos mais próximos de um ponto de teste com base em uma métrica de distância (como a Euclidiana) e classificando o ponto com a classe mais comum entre esses vizinhos. O valor de $k$ influencia diretamente o desempenho: valores baixos podem levar a classificações ruidosas, enquanto valores muito altos podem suavizar demais as fronteiras entre classes.
+ 
+  Por ser um algoritmo simples e intuitivo, o KNN é amplamente usado em problemas de reconhecimento de padrões e classificação. No entanto, ele pode ser computacionalmente custoso em grandes conjuntos de dados, já que precisa calcular a distância entre o ponto de teste e todos os pontos do conjunto de treino. Além disso, o desempenho do KNN pode ser sensível à escala dos dados, tornando importante a normalização ou padronização prévia.
+ 
+  Foram consideradas 2 classes $C_{1}$ em vermelho, com modelo gerador gaussiano ($\mu=-1$ / $\sigma^{2}=1$) e, $C_{2}$ em azul, com modelo gerador gaussiano ($\mu=1$ / $\sigma^{2}=1$). Foram geradas 10 observações de cada classe. Os dados de treinamento estão da \autoref{knn1}
+  
+   \begin{figure}[ht]
+   	\centering % Centraliza a figura
+   	\includegraphics[width=0.4 \textwidth]{fig/knn1.png} % tamanho da img
+   	\caption{Observações geradas para classificação (10 pontos para cada classe).} % Legenda da figura
+   	\label{knn1} % Etiqueta para referência cruzada
+   \end{figure} 
+    
+ A seguir foram geradas $4$ novas observações aleatórias com média e variância aleatórias, que foram chamados de dados de teste, já que serão classificados com o modeo K-NN treinado a partir dos $20$ pontos iniciais. 
+ 
+ Os novos dados, ainda não classificados estão representados em com "$ \times $" sem definição de cor na \autoref{knn2}.
+ 
+   \begin{figure}[ht]
+  	\centering % Centraliza a figura
+  	\includegraphics[width=0.4 \textwidth]{fig/knn2.png} % tamanho da img
+  	\caption{Dados de treino(20 pontos) e 4 dados não classificados de teste.} % Legenda da figura
+  	\label{knn2} % Etiqueta para referência cruzada
+  \end{figure} 
+  
+  Os novos 4 dados foram classificados com $K = \left\{1,2,3,5\right\}$. Todos os detalhes da análise e código estão no anexo E.5. Observou-se que a classificação de um ponto modificou com a mudança do parâmetro $K$. A classificação de um dado no KNN pode mudar significativamente dependendo da quantidade de vizinhos escolhida, ou seja, o valor de $K$. Esse parâmetro define quantos vizinhos mais próximos (do ponto de teste) o algoritmo irá considerar para tomar a decisão de qual classe atribuir. Serão apresentados os resultados que apresentaram impacto na classificação ($K = \left\{2,3\right\}$). Para valores de $k$ superior a $2$ o ponto destacado na \autoref{knn3} passou da classe 1 para a classe 2.
+  
+   \begin{figure}[ht]
+  	\centering % Centraliza a figura
+  	\includegraphics[width=0.6 \textwidth]{fig/knn3.png} % tamanho da img
+  	\caption{Resultado do classificador K-NN.} % Legenda da figura
+  	\label{knn3} % Etiqueta para referência cruzada
+  \end{figure}
+  
+  Quando $k$ é pequeno (ex: k = 1), o algoritmo considera apenas o vizinho mais próximo. Isso o torna muito sensível ao ruído e a \textit{outliers}, pois uma única amostra próxima — mesmo que esteja isolada ou incorreta — pode determinar a classe do ponto testado. Por isso, ocorre o \textit{overfitting}, já que o modelo se adapta demais às pequenas variações dos dados de treino.
+  
+  Quando $k$ é grande (ex: k = 15 ou 20), o modelo se torna mais estável e resistente a \textit{outliers}, pois a decisão passa a refletir uma média mais geral do comportamento das classes próximas.
+  
+  Porém, se $k$ for grande demais, o modelo pode começar a incluir pontos de classes diferentes que estão mais distantes, resultando em \textit{underfitting} — ou seja, uma perda de precisão nas fronteiras entre as classes. Por isso, escolher um $k$ adequado é crucial. Em geral, usa-se validação cruzada para encontrar o melhor valor de $k$ com base no desempenho do modelo nos dados de validação.
+  
+  Além da escolha do valor de $k$, outro fator que influencia diretamente o resultado da classificação no K-NN é a distribuição das classes no conjunto de dados. Quando há um desequilíbrio entre as classes (por exemplo, uma classe aparece muito mais que as outras), o K-NN pode tender a favorecer a classe majoritária, especialmente com valores maiores de $k$. Para mitigar esse efeito, pode-se usar técnicas como ponderar os votos dos vizinhos pela distância (dando mais peso aos vizinhos mais próximos) ou aplicar métodos de balanceamento, como \textit{undersampling}, \textit{oversampling}. Isso garante que a decisão do K-NN seja mais justa e eficaz, mesmo em contextos com distribuição desigual das classes.
+  
+  Em resumo, o K-NN é um algoritmo simples e eficaz para tarefas de classificação, mas sua performance depende fortemente da escolha adequada do número de vizinhos (k), da escala dos dados e da distribuição das classes. Valores pequenos de $k$ tornam o modelo mais sensível a ruídos, enquanto valores grandes podem comprometer sua capacidade de capturar padrões locais. Além disso, em contextos com classes desbalanceadas, estratégias adicionais como ponderação por distância ou balanceamento de dados podem ser essenciais. Quando bem ajustado, o K-NN pode oferecer bons resultados e servir como uma base comparativa sólida para modelos mais complexos.
+
+\bibliographystyle{unsrt}
+\bibliography{lista2_referencias}
+
+\end{document}
